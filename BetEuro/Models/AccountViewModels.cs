@@ -49,9 +49,8 @@ namespace BetEuro.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Username")]        
+        public string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -64,6 +63,12 @@ namespace BetEuro.Models
 
     public class RegisterViewModel
     {
+        [Required]
+        [StringLength(10, ErrorMessage = "Nazwa użytkownika musi mieć conajmniej {2} znaki, maksymalnie {0}", MinimumLength = 4)]
+        [DataType(DataType.Text)]
+        [Display(Name = "Nazwa użytkownika")]
+        public string UserName { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
@@ -79,6 +84,17 @@ namespace BetEuro.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "Piwo?")]
+        public bool Piwo { get; set; }
+
+        public bool isActive { get; set; }
+
+        [Required]
+        [StringLength(200, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 10)]
+        [Display(Name = "Komentarz")]
+        public string Comment { get; set; }
     }
 
     public class ResetPasswordViewModel
