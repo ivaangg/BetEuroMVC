@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="49a1a9308b9448848228b03daa017c87" Name="Diagram1" ZoomLevel="94">
+        <EntityTypeShape EntityType="BEModel.User" Width="1.5" PointX="9.125" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BEModel.Bet" Width="1.5" PointX="6.875" PointY="4.375" IsExpanded="true" FillColor="Red" />
+        <EntityTypeShape EntityType="BEModel.Leaderboard" Width="1.5" PointX="9.125" PointY="10.75" IsExpanded="true" FillColor="Black" />
+        <EntityTypeShape EntityType="BEModel.Match" Width="1.5" PointX="5" PointY="4.375" IsExpanded="true" FillColor="Red" />
+        <EntityTypeShape EntityType="BEModel.Point" Width="1.5" PointX="10.75" PointY="10.75" IsExpanded="true" FillColor="Black" />
+        <EntityTypeShape EntityType="BEModel.Score" Width="1.5" PointX="5" PointY="7.5" IsExpanded="true" FillColor="Red" />
+        <EntityTypeShape EntityType="BEModel.Team" Width="1.5" PointX="3" PointY="4.375" IsExpanded="true" FillColor="Red" />
+        <AssociationConnector Association="BEModel.FK_Leaderboard_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="BEModel.FK_UserInBet" ManuallyRouted="false" />
+        <AssociationConnector Association="BEModel.FK_MatchInBet" ManuallyRouted="false" />
+        <AssociationConnector Association="BEModel.FK_Away" ManuallyRouted="false" />
+        <AssociationConnector Association="BEModel.FK_Home" ManuallyRouted="false" />
+        <AssociationConnector Association="BEModel.FK_Score_Match" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="BEModel.Role" Width="1.5" PointX="9.125" PointY="2.25" />
+        <AssociationConnector Association="BEModel.AspNetUserRoles" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

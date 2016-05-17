@@ -33,5 +33,6 @@ namespace BetEuro.Models
         {
             return new ApplicationDbContext();
         }
+
     }
 }

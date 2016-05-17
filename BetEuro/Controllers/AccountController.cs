@@ -169,11 +169,12 @@ namespace BetEuro.Controllers
 
                 user.Piwo = model.Piwo;
                 user.isActive = false;
-                user.Comment = model.Comment;
+                user.Comment = model.Comment;                
 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    UserManager.AddToRole(user.Id, "User");
                     var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action(
                         "ConfirmEmail",
