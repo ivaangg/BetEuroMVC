@@ -23,6 +23,9 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Role","Index","Roles")</li>
                     <li>@Html.ActionLink("Użytkownicy", "Index", "Users")</li>
+                    <li>@Html.ActionLink("Drużyny", "Index", "Teams")</li>
+                    <li>@Html.ActionLink("Mecze", "Index", "Matches")</li>
+                    <li>@Html.ActionLink("Wyniki", "Index", "Scores")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -37,7 +40,7 @@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/bootstrap")    
     @RenderSection("scripts", required: false)
 </body>
 </html>

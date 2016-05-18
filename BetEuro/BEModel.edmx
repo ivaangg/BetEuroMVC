@@ -69,6 +69,7 @@
           <Property Name="HomeId" Type="int" Nullable="false" />
           <Property Name="AwayId" Type="int" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Factor" Type="int" />
         </EntityType>
         <EntityType Name="Points">
           <Key>
@@ -300,6 +301,7 @@
           <NavigationProperty Name="AwayTeam" Relationship="Self.FK_Away" FromRole="Match" ToRole="Team" />
           <NavigationProperty Name="HomeTeam" Relationship="Self.FK_Home" FromRole="Match" ToRole="Team" />
           <NavigationProperty Name="Score" Relationship="Self.FK_Score_Match" FromRole="Match" ToRole="Score" />
+          <Property Name="Factor" Type="Int32" />
         </EntityType>
         <EntityType Name="Point">
           <Key>
@@ -503,6 +505,7 @@
           <EntitySetMapping Name="Matches">
             <EntityTypeMapping TypeName="BEModel.Match">
               <MappingFragment StoreEntitySet="Match">
+                <ScalarProperty Name="Factor" ColumnName="Factor" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="HomeId" ColumnName="HomeId" />
                 <ScalarProperty Name="AwayId" ColumnName="AwayId" />
