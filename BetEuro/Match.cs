@@ -24,7 +24,11 @@ namespace BetEuro
         public int Id { get; set; }
         public int HomeId { get; set; }
         public int AwayId { get; set; }
-        public System.DateTime Date { get; set; }
+        public System.DateTime Date
+        {
+            get;
+            set;
+        }
         public Nullable<int> Factor { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

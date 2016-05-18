@@ -11,6 +11,7 @@ using BetEuro;
 
 namespace BetEuro.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class MatchesController : Controller
     {
         private BEEntities db = new BEEntities();
