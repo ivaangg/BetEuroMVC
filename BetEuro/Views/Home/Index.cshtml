@@ -4,8 +4,9 @@
     ViewBag.Title = "Bet Euro";
 }
 
+<h2>Dzisiejsze mecze:</h2>
 
-@foreach (Match item in Model.OrderBy(p => p.Date))
+@foreach (Match item in Model.Where(p => p.Date.Day == System.DateTime.Now.Day).OrderBy(p => p.Date))
 {
     <div class="row">
         <h2>@item.HomeTeam.ShortName - @item.AwayTeam.ShortName</h2>
