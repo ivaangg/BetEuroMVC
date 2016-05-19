@@ -17,8 +17,16 @@
 
 @foreach (DateTime date in afterDateList)
 {
-    <section style="max-width:682px;margin:auto;background-color:black">
-        <h4 style="padding-left:10px;padding-top:10px"><font color="white">@date.Date.ToShortDateString()</font></h4>
+    <div style="max-width:682px;margin:auto">
+        <h4 align="center" 
+            style="background: -moz-linear-gradient(rgb(125,0,2), rgb(202,1,6));
+                    background:-webkit-linear-gradient(rgb(125,0,2), rgb(202,1,6));
+                    background: -moz-linear-gradient(rgb(125,0,2), rgb(202,1,6));
+                    background: linear-gradient(rgb(125,0,2), rgb(202,1,6));                    
+                    padding-top:5px;
+                    padding-bottom:5px">
+        <font color="white">@date.Date.ToShortDateString()</font>
+        </h4>
         <ul style="list-style-type:none;margin:0px;padding:0px">
             @foreach (Match match in afterList.Where(p => p.Date.Date == date.Date))
             {
@@ -33,7 +41,7 @@
                         <tr>
                             <td width="5%">@match.Date.ToString("HH:mm")</td>
                             <td width="25%" align="right">
-                                @match.HomeTeam.LongName
+                                @match.HomeTeam.ShortName   
                             </td>
                             <td width="8%"  align="center">
                                 <img src="@Url.Content("~/Content/Images/Flags/" + match.HomeTeam.ShortName + ".png")" width="30" height="30" />
@@ -52,7 +60,7 @@
                                 <img src="@Url.Content("~/Content/Images/Flags/" + match.AwayTeam.ShortName + ".png")" width="30" height="30" />
                             </td>
                             <td width="25%" align="left">
-                                @match.AwayTeam.LongName
+                                @match.AwayTeam.ShortName
                             </td>
                             <td>
                                 @if (User.Identity.IsAuthenticated)
@@ -79,7 +87,7 @@
                 </li>
             }        
         </ul>
-    </section>
+    </div>
 }
 
 
