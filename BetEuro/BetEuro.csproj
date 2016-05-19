@@ -336,7 +336,6 @@
     <Content Include="Views\Teams\Index.cshtml" />
     <Content Include="Views\Scores\Create.cshtml" />
     <Content Include="Views\Scores\Delete.cshtml" />
-    <Content Include="Views\Scores\Details.cshtml" />
     <Content Include="Views\Scores\Edit.cshtml" />
     <Content Include="Views\Scores\Index.cshtml" />
     <Content Include="Views\Matches\Create.cshtml" />

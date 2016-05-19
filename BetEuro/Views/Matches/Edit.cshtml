@@ -38,7 +38,7 @@
             @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Date, new { htmlAttributes = new {
-               @Value = Model.Date.Day.ToString() + "/" + Model.Date.Month.ToString() + "/" + Model.Date.Year.ToString() + " " + Model.Date.ToString("HH:mm"),
+               @Value = Model.Date.Month.ToString() + "/" + Model.Date.Day.ToString() + "/" + Model.Date.Year.ToString() + " " + Model.Date.ToString("HH:mm"),
                @class = "form-control"
            } })
                 @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
@@ -71,7 +71,7 @@
       $(function () {
         $('#Date').datetimepicker({
           defaultDate: '@Model.Date',
-          format: 'DD/MM/YYYY HH:mm',
+          format: 'MM/DD/YYYY HH:mm',
           showClose: true,
           showClear: true,
           toolbarPlacement: 'top'

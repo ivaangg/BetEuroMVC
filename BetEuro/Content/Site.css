@@ -22,3 +22,9 @@ select,
 textarea {
     max-width: 280px;
 }
+
+#span
+{
+    font-size: 18.2px !important;
+    background-color: red;    
+}

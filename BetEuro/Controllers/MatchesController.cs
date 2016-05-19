@@ -110,6 +110,10 @@ namespace BetEuro.Controllers
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             Match match = await db.Matches.FindAsync(id);
+            foreach (Bet bet in db.Bets.Where(p => p.Match.Id == id))
+                db.Bets.Remove(bet);
+            foreach (Score score in db.Scores.Where(p => p.Match.Id == id))
+                db.Scores.Remove(score);
             db.Matches.Remove(match);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");

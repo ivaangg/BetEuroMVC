@@ -4,13 +4,89 @@
     ViewBag.Title = "Bet Euro";
 }
 
-<h2>Dzisiejsze mecze:</h2>
 
-@foreach (Match item in Model.Where(p => p.Date.Day == System.DateTime.Now.Day).OrderBy(p => p.Date))
+<h2 style="text-align:center">Najbliższe mecze:</h2>
+
+@{
+    DateTime now = DateTime.Now;
+    IEnumerable<Match> beforeList = Model.Where(p => p.Date < now).OrderByDescending(p => p.Date).Take(10);
+    IEnumerable<Match> afterList = Model.Where(p => p.Date > now).OrderBy(p => p.Date).Take(10);
+    IEnumerable<DateTime> beforeDateList = beforeList.Select(p => p.Date.Date).Distinct();
+    IEnumerable<DateTime> afterDateList = afterList.Select(p => p.Date.Date).Distinct();
+        }
+
+@foreach (DateTime date in afterDateList)
 {
-    <div class="row">
-        <h2>@item.HomeTeam.ShortName - @item.AwayTeam.ShortName</h2>
-    </div>
+    <section style="max-width:682px;margin:auto;background-color:black">
+        <h4 style="padding-left:10px;padding-top:10px"><font color="white">@date.Date.ToShortDateString()</font></h4>
+        <ul style="list-style-type:none;margin:0px;padding:0px">
+            @foreach (Match match in afterList.Where(p => p.Date.Date == date.Date))
+            {
+                <li>                    
+                    <table style="margin:auto;background-color:white;width:100%;border-bottom: 1px solid black">
+                        @if (match.Factor != 1)
+                        {
+                            <tr style="height:10px;background-color:red">
+                                <td colspan="7" align="center"><b>Punkty x @match.Factor.ToString()</b></td>
+                            </tr>
+                        }
+                        <tr>
+                            <td width="5%">@match.Date.ToString("HH:mm")</td>
+                            <td width="25%" align="right">
+                                @match.HomeTeam.LongName
+                            </td>
+                            <td width="8%"  align="center">
+                                <img src="@Url.Content("~/Content/Images/Flags/" + match.HomeTeam.ShortName + ".png")" width="30" height="30" />
+                            </td>
+                            <td width="14%" align="center">
+                                @if (match.Score != null)
+                                {
+                                    <span style="font-size: 18.2px">@match.Score.HomeScore.ToString() : @match.Score.AwayScore.ToString()</span>
+                                }
+                                else
+                                {
+                                    <span style="font-size: 18.2px">n/d</span>
+                                }
+                            </td>
+                            <td width="8%"  align="center">
+                                <img src="@Url.Content("~/Content/Images/Flags/" + match.AwayTeam.ShortName + ".png")" width="30" height="30" />
+                            </td>
+                            <td width="25%" align="left">
+                                @match.AwayTeam.LongName
+                            </td>
+                            <td>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    if (match.Bets.Any(p => p.UserId == User.Identity.Name))
+                                    {
+                                        Bet bet = match.Bets.Single(p => p.UserId == User.Identity.Name);
+                                        <span>Twój typ: <b>@bet.HomeScore:@bet.AwayScore</b></span>
+                                    }
+                                    else
+                                    {
+                                        <span>Twój typ: <b>brak</b></span>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                        @if (match.Factor != 1)
+                        {
+                            <tr style="height:5px;background-color:red">
+                                <td colspan="7"></td>
+                            </tr>
+                        }
+                    </table>
+                </li>
+            }        
+        </ul>
+    </section>
 }
+
+
+
+
+
+
+
 
 
