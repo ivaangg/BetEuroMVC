@@ -1,0 +1,101 @@
+﻿@model IEnumerable<BetEuro.Leaderboard> 
+
+@{
+    ViewBag.Title = "Leaderboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div align="center" class="row" style="margin: 0 auto;">
+    <div class="col-md-4" style="max-width:50%;display:inline-block">
+        <h4>Z piwem</h4>
+        <table class="table">
+            <tr>
+                <th>
+                    Login
+                </th>
+                <th>
+                    Mecze
+                </th>
+                <th>
+                    Wynik
+                </th>
+                <th>
+                    1X2
+                </th>
+                <th>
+                    Punkty
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.Where(p => p.User.Piwo).OrderBy(p => p.Points).ThenBy(p => p.ScoreHit).ThenBy(p => p.ResultHit).ThenBy(p => p.PlacedBets))
+            {
+                <tr>
+                    <td>
+                        @item.User.UserName
+                    </td>
+                    <td>
+                        @item.PlacedBets
+                    </td>
+                    <td>
+                        @item.ScoreHit
+                    </td>
+                    <td>
+                        @item.ResultHit
+                    </td>
+                    <td>
+                        @item.Points
+                    </td>
+                    <td></td>
+                </tr>
+            }
+        </table>       
+    </div>
+    <div class="col-md-4" style="max-width:50%;display:inline-block">
+        <h4>Wszyscy</h4>
+        <table class="table">
+            <tr>
+                <th>
+                    Login
+                </th>
+                <th>
+                    Mecze
+                </th>
+                <th>
+                    Wynik
+                </th>
+                <th>
+                    1X2
+                </th>
+                <th>
+                    Punkty
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.OrderBy(p => p.Points).ThenBy(p => p.ScoreHit).ThenBy(p => p.ResultHit).ThenBy(p => p.PlacedBets))
+            {
+                <tr>
+                    <td>
+                        @item.User.UserName
+                    </td>
+                    <td>
+                        @item.PlacedBets
+                    </td>
+                    <td>
+                        @item.ScoreHit
+                    </td>
+                    <td>
+                        @item.ResultHit
+                    </td>
+                    <td>
+                        @item.Points
+                    </td>
+                    <td></td>
+                </tr>
+            }
+
+        </table>
+
+    </div>
+</div>

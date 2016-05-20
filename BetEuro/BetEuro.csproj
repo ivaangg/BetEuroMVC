@@ -342,6 +342,8 @@
     <Content Include="Views\Matches\Delete.cshtml" />
     <Content Include="Views\Matches\Edit.cshtml" />
     <Content Include="Views\Matches\Index.cshtml" />
+    <Content Include="Views\Home\SingleMatch.cshtml" />
+    <Content Include="Views\Home\Leaderboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

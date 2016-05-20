@@ -1,0 +1,64 @@
+﻿@using Microsoft.AspNet.Identity
+@model BetEuro.Match
+
+@{
+    ViewBag.Title = Model.HomeTeam.ShortName + " - " + Model.AwayTeam.ShortName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("BetThisMatch", "Home", FormMethod.Post))
+{
+
+    string userId = User.Identity.GetUserName();
+    int homeScore = Model.Bets.Any(p => p.User.UserName == userId) == true ? Model.Bets.Single(p => p.User.UserName == userId).HomeScore : 0;
+    int awayScore = Model.Bets.Any(p => p.User.UserName == userId) == true ? Model.Bets.Single(p => p.User.UserName == userId).AwayScore : 0;
+    @Html.Hidden("MatchId", Model.Id)
+    @Html.Hidden("UserId", userId)
+    <br />
+    <br />
+    <div style="max-width:682px;margin:auto">
+        <table>
+            <tr style="border-bottom: 1px solid black;padding-bottom:5px">
+                <td width="40%" align="center">
+                    <img src="@Url.Content("~/Content/Images/Flags/" + Model.HomeTeam.ShortName + ".png")" style="width:100%; height:auto;display:block" />
+                    <span style="font-size: 18.2px">@Model.HomeTeam.LongName</span>
+                </td>
+                <td width="20%" align="center">
+                    <span style="font-size: 18.2px">Wynik:</span>
+                    <br />
+                    @if (Model.Score != null)
+                    {
+                        <span style="font-size: 18.2px">@Model.Score.HomeScore.ToString() : @Model.Score.AwayScore.ToString()</span>
+                    }
+                    else
+                    {
+                        <span style="font-size: 18.2px">n/d</span>
+                    }
+                </td>
+                <td width="40%" align="center">
+                    <img src="@Url.Content("~/Content/Images/Flags/" + Model.AwayTeam.ShortName + ".png")" style="width:100%; height:auto;display:block" />
+                    <span style="font-size: 18.2px">@Model.AwayTeam.LongName</span>
+                </td>
+            </tr>
+            <tr style="padding-bottom:5px">
+                <td colspan="3" align="center"><h3>Twój typ:</h3></td>
+            </tr>
+            <tr>
+                <td width="40%" align="center">
+                    @Html.TextBox("HomeScore", homeScore,
+             new { @style = "width:50px;height:50px;font-size:30px;text-align:center", @type = "number" })
+                </td>
+                <td width="20%" align="center">
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Save" class="btn btn-default" />
+                        </div>
+                    </div>
+                </td>
+                <td width="40%" align="center">
+                    @Html.TextBox("AwayScore", awayScore,
+              new { @style = "width:50px;height:50px;font-size:30px;text-align:center", @type="number" })
+                </td>
+            </tr>
+        </table>
+    </div>
+}

@@ -15,6 +15,8 @@ namespace BetEuro.Controllers
     public class MatchesController : Controller
     {
         private BEEntities db = new BEEntities();
+        
+
 
         // GET: Matches
         public async Task<ActionResult> Index()

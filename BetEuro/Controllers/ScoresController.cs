@@ -121,6 +121,14 @@ namespace BetEuro.Controllers
             return RedirectToAction("Index");
         }
 
+        private void UpdateLeaderboard(Score score)
+        {
+            foreach (Bet bet in score.Match.Bets)
+            {
+
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
