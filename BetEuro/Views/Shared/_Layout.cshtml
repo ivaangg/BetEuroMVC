@@ -32,7 +32,16 @@
                         }
                     </li>
                     <li>
-                        @Html.ActionLink("Tabela", "Leaderboard", "Home")
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @Html.ActionLink("Tabela", "Leaderboard", "Home")
+                        }
+                    </li>
+                    <li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @Html.ActionLink("Mecze", "Matches", "Home")
+                        }
                     </li>
                 </ul>
                 @Html.Partial("_LoginPartial")

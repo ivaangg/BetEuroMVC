@@ -21,6 +21,12 @@ namespace BetEuro.Controllers
             return View(await matches.ToListAsync());
         }
 
+        public async Task<ActionResult> Matches()
+        {
+            var matches = db.Matches.Include(m => m.AwayTeam).Include(m => m.HomeTeam).Include(m => m.Score);
+            return View(await matches.ToListAsync());
+        }
+
         public async Task<ActionResult> Leaderboard()
         {
             var points = db.Leaderboards;

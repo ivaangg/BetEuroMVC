@@ -344,6 +344,7 @@
     <Content Include="Views\Matches\Index.cshtml" />
     <Content Include="Views\Home\SingleMatch.cshtml" />
     <Content Include="Views\Home\Leaderboard.cshtml" />
+    <Content Include="Views\Home\Matches.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
