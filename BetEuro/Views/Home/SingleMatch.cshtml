@@ -16,22 +16,30 @@
     <br />
     <br />
     <div style="max-width:682px;margin:auto">
-        <table>
-            <tr style="border-bottom: 1px solid black;padding-bottom:5px">
+        <table class="table table-striped">
+            @if (Model.Factor != 1)
+            {
+                <tr class="danger">
+                    <td colspan="3" style="text-align:center">
+                        <span style="font-size: 18.2px">Mecz punktowany x @Model.Factor</span>
+                    </td>
+                </tr>
+            }
+            <tr style="padding-bottom:5px">
                 <td width="40%" align="center">
                     <img src="@Url.Content("~/Content/Images/Flags/" + Model.HomeTeam.ShortName + ".png")" style="width:100%; height:auto;display:block" />
                     <span style="font-size: 18.2px">@Model.HomeTeam.LongName</span>
                 </td>
-                <td width="20%" align="center">
-                    <span style="font-size: 18.2px">Wynik:</span>
+                <td width="20%" align="center" style="vertical-align:middle">
+                    <span style="font-size: 18.2px;vertical-align:middle">Wynik:</span>
                     <br />
                     @if (Model.Score != null)
                     {
-                        <span style="font-size: 18.2px">@Model.Score.HomeScore.ToString() : @Model.Score.AwayScore.ToString()</span>
+                        <span style="font-size: 18.2px;vertical-align:middle">@Model.Score.HomeScore.ToString() : @Model.Score.AwayScore.ToString()</span>
                     }
                     else
                     {
-                        <span style="font-size: 18.2px">n/d</span>
+                        <span style="font-size: 18.2px;vertical-align:middle">n/d</span>
                     }
                 </td>
                 <td width="40%" align="center">
@@ -42,23 +50,154 @@
             <tr style="padding-bottom:5px">
                 <td colspan="3" align="center"><h3>Twój typ:</h3></td>
             </tr>
-            <tr>
-                <td width="40%" align="center">
-                    @Html.TextBox("HomeScore", homeScore,
-             new { @style = "width:50px;height:50px;font-size:30px;text-align:center", @type = "number" })
-                </td>
-                <td width="20%" align="center">
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Save" class="btn btn-default" />
+            @if (Model.Date > DateTime.Now)
+            {
+                <tr style="padding-bottom:5px">
+                    <td width="40%" align="center">
+                        @Html.TextBox("HomeScore", homeScore,
+                  new { @style = "width:50px;height:50px;font-size:30px;text-align:center;color:black", @type = "number" })
+                    </td>
+                    <td width="20%" align="center" style="vertical-align:middle">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Obstaw!" class="btn btn-primary" style="height:50px" />
+                                @if (ViewBag.Message != null)
+                                {
+                                    <p class="alert-danger">@ViewBag.Message</p>
+                                }
+                            </div>
                         </div>
-                    </div>
-                </td>
-                <td width="40%" align="center">
-                    @Html.TextBox("AwayScore", awayScore,
-              new { @style = "width:50px;height:50px;font-size:30px;text-align:center", @type="number" })
-                </td>
-            </tr>
+                    </td>
+                    <td width="40%" align="center">
+                        @Html.TextBox("AwayScore", awayScore,
+                   new { @style = "width:50px;height:50px;font-size:30px;text-align:center;color:black", @type = "number" })
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr style="padding-bottom:5px">
+                    <td width="40%" align="center">
+                        @Html.Label(homeScore.ToString(), new { @style = "width:50px;height:50px;font-size:30px;text-align:center", @type = "number" })
+                    </td>
+                    <td width="20%" align="center">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">                                
+                                @if (ViewBag.Message != null)
+                                {
+                                    <h5 class="alert-danger" style="font-size: 18.2px">@ViewBag.Message</h5>
+                                }
+                                else
+                                {
+                                    <span style="width:50px;height:50px;font-size:30px;text-align:center">:</span>
+                                }
+                            </div>
+                        </div>
+                    </td>
+                    <td width="40%" align="center">
+                        @Html.Label(awayScore.ToString(),new { @style = "width:50px;height:50px;font-size:30px;text-align:center", @type = "number" })
+                    </td>
+                </tr>
+            }
+
+            @if (Model.Date < DateTime.Now)
+            {
+                <tr>
+                    <td colspan="3" align="center"><h3>Wszystkie typy:</h3></td>
+                </tr>
+                if (Model.Score == null)
+                {
+                    foreach (Bet b in Model.Bets)
+                    {
+                    <tr>
+                        <td colspan="2" align="center">
+                           <h5>@b.User.UserName</h5> 
+                        </td>
+                        <td align="center">
+                           <h5>@b.HomeScore - @b.AwayScore</h5> 
+                        </td>                        
+                    </tr>
+                    }
+                }
+                else
+                {
+                    foreach (Bet b in Model.Bets.Where(p => p.HomeScore == Model.Score.HomeScore && p.AwayScore == Model.Score.AwayScore))
+                    {
+                        <tr>
+                            <td align="center">
+                                <h5>@b.User.UserName</h5>
+                            </td>
+                            <td align="center">
+                                <h5>@b.HomeScore - @b.AwayScore</h5>
+                            </td>
+                            <td align="center">                                
+                                @if (Model.Factor == 1)
+                                {
+                                    <h5>25 punktów</h5>
+                                }
+                                else if (Model.Factor == 2)
+                                {
+                                    <h5>50 punktów</h5>
+                                }
+                                else
+                                {
+                                    <h5>75 punktów</h5>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    foreach (Bet b in Model.Bets.Where(p => !(p.HomeScore == Model.Score.HomeScore && p.AwayScore == Model.Score.AwayScore) && p.Result == Model.Score.Result))
+                    {
+                        <tr>
+                            <td align="center">
+                                <h5>@b.User.UserName</h5>
+                            </td>
+                            <td align="center">
+                                <h5>@b.HomeScore - @b.AwayScore</h5>
+                            </td>
+                            <td align="center">
+                                @if (Model.Factor == 1)
+                                {
+                                    <h5>5 punktów</h5>
+                                }
+                                else if (Model.Factor == 2)
+                                {
+                                    <h5>10 punktów</h5>
+                                }
+                                else
+                                {
+                                    <h5>15 punktów</h5>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    foreach (Bet b in Model.Bets.Where(p => !(p.HomeScore == Model.Score.HomeScore && p.AwayScore == Model.Score.AwayScore) && !(p.Result == Model.Score.Result)))
+                    {
+                        <tr>
+                            <td align="center">
+                                <h5>@b.User.UserName</h5>
+                            </td>
+                            <td align="center">
+                                <h5>@b.HomeScore - @b.AwayScore</h5>
+                            </td>
+                            <td align="center">
+                                @if (Model.Factor == 1)
+                                {
+                                    <h5>1 punktów</h5>
+                                }
+                                else if (Model.Factor == 2)
+                                {
+                                    <h5>2 punktów</h5>
+                                }
+                                else
+                                {
+                                    <h5>3 punktów</h5>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            }
         </table>
     </div>
 }

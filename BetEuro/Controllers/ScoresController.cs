@@ -40,7 +40,7 @@ namespace BetEuro.Controllers
         // GET: Scores/Create
         public ActionResult Create()
         {
-            ViewBag.Id = new SelectList(db.Matches, "Id", "Id");
+            ViewBag.Id = new SelectList((from s in db.Matches.Where(p => p.Score == null).ToList() select new {Id = s.Id,FullName = s.HomeTeam.ShortName + "-" + s.AwayTeam.ShortName}),"Id","FullName",null);
             return View();
         }
 
@@ -49,17 +49,32 @@ namespace BetEuro.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,HomeScore,AwayScore,Result")] Score score)
+        public async Task<ActionResult> Create([Bind(Include = "Id,HomeScore,AwayScore")] Score score)
         {
             if (ModelState.IsValid)
             {
-                db.Scores.Add(score);
+                if (score.HomeScore > score.AwayScore)
+                {
+                    score.Result = 1;
+                }
+                else if (score.HomeScore == score.AwayScore)
+                {
+                    score.Result = 0;
+                }
+                else
+                {
+                    score.Result = 2;
+                }
+                db.Scores.Add(score);                
                 await db.SaveChangesAsync();
+
+                UpdateLeaderboard();
+
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Id = new SelectList(db.Matches, "Id", "Id", score.Id);
-            return View(score);
+            ViewBag.Id = new SelectList((from s in db.Matches.Where(p => p.Score == null).ToList() select new { Id = s.Id, FullName = s.HomeTeam.ShortName + "-" + s.AwayTeam.ShortName }), "Id", "FullName", null);
+            return View();
         }
 
         // GET: Scores/Edit/5
@@ -83,12 +98,28 @@ namespace BetEuro.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,HomeScore,AwayScore,Result")] Score score)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,HomeScore,AwayScore")] Score score)
         {
             if (ModelState.IsValid)
-            {
+            {               
+                if (score.HomeScore > score.AwayScore)
+                {
+                    score.Result = 1;
+                }
+                else if (score.HomeScore == score.AwayScore)
+                {
+                    score.Result = 0;
+                }
+                else
+                {
+                    score.Result = 2;
+                }
+
                 db.Entry(score).State = EntityState.Modified;
                 await db.SaveChangesAsync();
+
+                UpdateLeaderboard();
+
                 return RedirectToAction("Index");
             }
             ViewBag.Id = new SelectList(db.Matches, "Id", "Id", score.Id);
@@ -121,12 +152,51 @@ namespace BetEuro.Controllers
             return RedirectToAction("Index");
         }
 
-        private void UpdateLeaderboard(Score score)
+        private void UpdateLeaderboard()
         {
-            foreach (Bet bet in score.Match.Bets)
-            {
+            db.Database.ExecuteSqlCommand("TRUNCATE TABLE [Leaderboard]");
+            db.SaveChanges();           
 
+            foreach (User u in db.Users.Where(p => p.isActive))
+            {
+                Leaderboard lb = new Leaderboard();
+                lb.User = u;
+                lb.UserId = u.Id;
+                lb.PlacedBets = 0;
+                lb.ResultHit = 0;
+                lb.ScoreHit = 0;
+                lb.Points = 0;
+
+                foreach (Bet b in u.Bets)
+                {
+                    Match m = db.Matches.Single(p => p.Id == b.MatchId);
+                    
+                    if (m.Score != null)
+                    {
+                        // BET POINTS
+                        lb.PlacedBets++;
+                        lb.Points += m.Factor.Value * db.Points.Single(p => p.Id == "Bet").Points;
+
+                        if (m.Score.HomeScore == b.HomeScore && m.Score.AwayScore == b.AwayScore)
+                        {
+                            //SCORE
+                            lb.ScoreHit++;
+                            lb.Points += m.Factor.Value * db.Points.Single(p => p.Id == "Score").Points;
+                        }
+                        else if (m.Score.Result == b.Result)
+                        {
+                            //RESULT
+                            lb.ResultHit++;
+                            lb.Points += m.Factor.Value * db.Points.Single(p => p.Id == "Result").Points;                            
+                        }
+                    }
+
+                }
+
+                db.Leaderboards.Add(lb);
             }
+
+            db.SaveChanges();
         }
 
         protected override void Dispose(bool disposing)

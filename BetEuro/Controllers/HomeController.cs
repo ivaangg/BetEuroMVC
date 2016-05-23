@@ -13,7 +13,7 @@ namespace BetEuro.Controllers
 {
     public class HomeController : Controller
     {
-        private BEEntities db = new BEEntities();        
+        private BEEntities db = new BEEntities();
 
         public async Task<ActionResult> Index()
         {
@@ -75,41 +75,50 @@ namespace BetEuro.Controllers
                 return View("SingleMatch", db.Matches.Single(p => p.Id == matchId));
             }
 
-            string userId = form[1];
-            if (matchId != 0 && userId != "")
+            if (db.Matches.Single(p => p.Id == matchId).Date > DateTime.Now)
             {
-                if (db.Bets.Any(p => matchId == p.MatchId && p.User.UserName == userId))
+
+                string userId = form[1];
+                if (matchId != 0 && userId != "")
                 {
-                    var betToDel = db.Bets.Single(p => matchId == p.MatchId && p.User.UserName == userId);
-                    db.Bets.Remove(betToDel);
-                    db.SaveChanges();
+                    if (db.Bets.Any(p => matchId == p.MatchId && p.User.UserName == userId))
+                    {
+                        var betToDel = db.Bets.Single(p => matchId == p.MatchId && p.User.UserName == userId);
+                        db.Bets.Remove(betToDel);
+                        db.SaveChanges();
+                    }
+
+                    bet = new Bet();
+                    bet.Match = db.Matches.Single(p => p.Id == matchId);
+                    bet.User = db.Users.Single(p => p.UserName == userId);
                 }
-                
-                bet = new Bet();
-                bet.Match = db.Matches.Single(p => p.Id == matchId);
-                bet.User = db.Users.Single(p => p.UserName == userId);
-            }
-            else
-            {
+                else
+                {
+                    return View("SingleMatch", db.Matches.Single(p => p.Id == matchId));
+                }
+
+                bet.HomeScore = homeScore;
+                bet.AwayScore = awayScore;
+
+                if (homeScore > awayScore)
+                    bet.Result = 1;
+                else if (homeScore < awayScore)
+                    bet.Result = 2;
+                else
+                    bet.Result = 0;
+
+
+                db.Bets.Add(bet);
+
+
+                await db.SaveChangesAsync();
                 return View("SingleMatch", db.Matches.Single(p => p.Id == matchId));
             }
-
-            bet.HomeScore = homeScore;
-            bet.AwayScore = awayScore;
-
-            if (homeScore > awayScore)
-                bet.Result = 1;
-            else if (homeScore < awayScore)
-                bet.Result = 2;
             else
-                bet.Result = 0;
-
-
-            db.Bets.Add(bet);
-        
-
-            await db.SaveChangesAsync();
-            return View("SingleMatch", db.Matches.Single(p => p.Id == matchId));
-        }        
+            {
+                ViewBag.Message = "Czas na obstawianie wyniku się zakończył.";
+                return View("SingleMatch", db.Matches.Single(p => p.Id == matchId));
+            }
+        }
     }
 }
