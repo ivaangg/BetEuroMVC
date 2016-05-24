@@ -20,7 +20,7 @@
 <h3 style="text-align:center">Trwające mecze:</h3>
 
     <div style="max-width:682px;margin:auto">
-        <div class="panel" style="padding-bottom:0px;margin-bottom:0px;padding-top:0px;margin-top:0px">
+        <div class="panel panel-primary" style="padding-bottom:0px;margin-bottom:0px;padding-top:0px;margin-top:0px">
             <div class="panel-heading">
                 <h3 class="panel-title" style="text-align:center">@now.Date.ToShortDateString()</h3>
             </div>
@@ -32,23 +32,18 @@
                     @if (Request.IsAuthenticated)
                     {
                     <a href="@Url.Action("SingleMatch", "Home", new { id = match.Id })">
-                        <table class="table table-striped table-hover " style="margin:0px;padding:0px">
+                        <table class="table table-striped table-hover " style="margin:0px;padding:0px;table-layout: fixed;">
                             @if (match.Factor != 1)
-                            {
-                                <tr class="danger">
-                                    <td colspan="7" style="text-align:center">
-                                        Mecz punktowany x @match.Factor
-                                    </td>
-                                </tr>
-                                <tr class="danger">
-                                    <td width="23%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
+                            {                                
+                                <tr style="background-color: #d9edf7;">
+                                    <td width="15%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
                                     <td width="10%" align="right" style="vertical-align:middle">
                                         @match.HomeTeam.ShortName
                                     </td>
-                                    <td width="8%" align="center">
+                                    <td width="15%" align="center">
                                         <img src="@Url.Content("~/Content/Images/Flags/" + match.HomeTeam.ShortName + ".png")" width="30" height="30" />
                                     </td>
-                                    <td width="18%" align="center" style="vertical-align:middle">
+                                    <td width="20%" align="center" style="vertical-align:middle">
                                         @if (match.Score != null)
                                         {
                                             <span>@match.Score.HomeScore.ToString():@match.Score.AwayScore.ToString()</span>
@@ -58,23 +53,23 @@
                                             <span>n/d</span>
                                         }
                                     </td>
-                                    <td width="8%" align="center">
+                                    <td width="15%" align="center">
                                         <img src="@Url.Content("~/Content/Images/Flags/" + match.AwayTeam.ShortName + ".png")" width="30" height="30" />
                                     </td>
                                     <td width="10%" align="left" style="vertical-align:middle">
                                         @match.AwayTeam.ShortName
                                     </td>
-                                    <td width="23%" align="right" style="vertical-align:middle">
+                                    <td width="15%" align="right" style="vertical-align:middle">
                                         @if (User.Identity.IsAuthenticated)
                                         {
                                             if (match.Bets.Any(p => p.User.UserName == User.Identity.Name))
                                             {
                                                 Bet bet = match.Bets.Single(p => p.User.UserName == User.Identity.Name);
-                                                <span>| <b>@bet.HomeScore:@bet.AwayScore</b></span>
+                                                <span>|<b>@bet.HomeScore:@bet.AwayScore</b></span>
                                             }
                                             else
                                             {
-                                                <span>| <b>brak</b></span>
+                                                <span>|<b>x</b></span>
                                             }
                                         }
                                     </td>
@@ -84,14 +79,14 @@
                             else
                             {
                              <tr>
-                                <td width="23%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
+                                <td width="15%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
                                 <td width="10%" align="right" style="vertical-align:middle">
                                     @match.HomeTeam.ShortName
                                 </td>
-                                <td width="8%" align="center">
+                                <td width="15%" align="center">
                                     <img src="@Url.Content("~/Content/Images/Flags/" + match.HomeTeam.ShortName + ".png")" width="30" height="30" />
                                 </td>
-                                <td width="18%" align="center" style="vertical-align:middle">
+                                <td width="20%" align="center" style="vertical-align:middle">
                                     @if (match.Score != null)
                                     {
                                         <span>@match.Score.HomeScore.ToString():@match.Score.AwayScore.ToString()</span>
@@ -101,23 +96,23 @@
                                         <span>n/d</span>
                                     }
                                 </td>
-                                <td width="8%" align="center">
+                                <td width="15%" align="center">
                                     <img src="@Url.Content("~/Content/Images/Flags/" + match.AwayTeam.ShortName + ".png")" width="30" height="30" />
                                 </td>
                                 <td width="10%" align="left" style="vertical-align:middle">
                                     @match.AwayTeam.ShortName
                                 </td>
-                                <td width="23%" align="right" style="vertical-align:middle">
+                                <td width="15%" align="right" style="vertical-align:middle">
                                     @if (User.Identity.IsAuthenticated)
                                     {
                                         if (match.Bets.Any(p => p.User.UserName == User.Identity.Name))
                                         {
                                             Bet bet = match.Bets.Single(p => p.User.UserName == User.Identity.Name);
-                                            <span>| <b>@bet.HomeScore:@bet.AwayScore</b></span>
+                                            <span>|<b>@bet.HomeScore:@bet.AwayScore</b></span>
                                         }
                                         else
                                         {
-                                            <span>| <b>brak</b></span>
+                                            <span>|<b>x</b></span>
                                         }
                                     }
                                 </td>
@@ -128,23 +123,18 @@
                     }
                     else
                     {
-                        <table class="table table-striped " style="margin:0px;padding:0px">
+                        <table class="table table-striped " style="margin:0px;padding:0px;table-layout: fixed;">
                             @if (match.Factor != 1)
                             {
-                                <tr class="danger">
-                                    <td colspan="7" style="text-align:center">
-                                        Mecz punktowany x @match.Factor
-                                    </td>
-                                </tr>
-                                <tr class="danger">
-                                    <td width="23%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
+                                <tr style="background-color: #d9edf7;">
+                                    <td width="15%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
                                     <td width="10%" align="right" style="vertical-align:middle">
                                         @match.HomeTeam.ShortName
                                     </td>
-                                    <td width="8%" align="center">
+                                    <td width="15%" align="center">
                                         <img src="@Url.Content("~/Content/Images/Flags/" + match.HomeTeam.ShortName + ".png")" width="30" height="30" />
                                     </td>
-                                    <td width="18%" align="center" style="vertical-align:middle">
+                                    <td width="20%" align="center" style="vertical-align:middle">
                                         @if (match.Score != null)
                                         {
                                             <span>@match.Score.HomeScore.ToString():@match.Score.AwayScore.ToString()</span>
@@ -154,23 +144,23 @@
                                             <span>n/d</span>
                                         }
                                     </td>
-                                    <td width="8%" align="center">
+                                    <td width="15%" align="center">
                                         <img src="@Url.Content("~/Content/Images/Flags/" + match.AwayTeam.ShortName + ".png")" width="30" height="30" />
                                     </td>
                                     <td width="10%" align="left" style="vertical-align:middle">
                                         @match.AwayTeam.ShortName
                                     </td>
-                                    <td width="23%" align="right" style="vertical-align:middle">
+                                    <td width="15%" align="right" style="vertical-align:middle">
                                         @if (User.Identity.IsAuthenticated)
                                         {
                                             if (match.Bets.Any(p => p.User.UserName == User.Identity.Name))
                                             {
                                                 Bet bet = match.Bets.Single(p => p.User.UserName == User.Identity.Name);
-                                                <span>| <b>@bet.HomeScore:@bet.AwayScore</b></span>
+                                                <span>|<b>@bet.HomeScore:@bet.AwayScore</b></span>
                                             }
                                             else
                                             {
-                                                <span>| <b>brak</b></span>
+                                                <span>|<b>x</b></span>
                                             }
                                         }
                                     </td>
@@ -180,14 +170,14 @@
                             else
                             {
                                 <tr>
-                                    <td width="23%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
+                                    <td width="15%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
                                     <td width="10%" align="right" style="vertical-align:middle">
                                         @match.HomeTeam.ShortName
                                     </td>
-                                    <td width="8%" align="center">
+                                    <td width="15%" align="center">
                                         <img src="@Url.Content("~/Content/Images/Flags/" + match.HomeTeam.ShortName + ".png")" width="30" height="30" />
                                     </td>
-                                    <td width="18%" align="center" style="vertical-align:middle">
+                                    <td width="20%" align="center" style="vertical-align:middle">
                                         @if (match.Score != null)
                                         {
                                             <span>@match.Score.HomeScore.ToString():@match.Score.AwayScore.ToString()</span>
@@ -197,23 +187,23 @@
                                             <span>n/d</span>
                                         }
                                     </td>
-                                    <td width="8%" align="center">
+                                    <td width="15%" align="center">
                                         <img src="@Url.Content("~/Content/Images/Flags/" + match.AwayTeam.ShortName + ".png")" width="30" height="30" />
                                     </td>
                                     <td width="10%" align="left" style="vertical-align:middle">
                                         @match.AwayTeam.ShortName
                                     </td>
-                                    <td width="23%" align="right" style="vertical-align:middle">
+                                    <td width="15%" align="right" style="vertical-align:middle">
                                         @if (User.Identity.IsAuthenticated)
                                         {
                                             if (match.Bets.Any(p => p.User.UserName == User.Identity.Name))
                                             {
                                                 Bet bet = match.Bets.Single(p => p.User.UserName == User.Identity.Name);
-                                                <span>| <b>@bet.HomeScore:@bet.AwayScore</b></span>
+                                                <span>|<b>@bet.HomeScore:@bet.AwayScore</b></span>
                                             }
                                             else
                                             {
-                                                <span>| <b>brak</b></span>
+                                                <span>|<b>x</b></span>
                                             }
                                         }
                                     </td>
@@ -227,11 +217,11 @@
     </div>
 }
 
-<h3 style="text-align:center">Najbliższe mecze:</h3>
+<h3 style="text-align:center">Nadchodzące mecze:</h3>
 @foreach (DateTime date in afterDateList)
 {
     <div style="max-width:682px;margin:auto">
-        <div class="panel" style="padding-bottom:0px;margin-bottom:0px;padding-top:0px;margin-top:0px">
+        <div class="panel panel-primary" style="padding-bottom:0px;margin-bottom:0px;padding-top:0px;margin-top:0px">
             <div class="panel-heading">
                 <h3 class="panel-title" style="text-align:center">@date.Date.ToShortDateString()</h3>
             </div>
@@ -243,119 +233,18 @@
                     @if (Request.IsAuthenticated)
                     {
                     <a href="@Url.Action("SingleMatch", "Home", new { id = match.Id })">
-                        <table class="table table-striped table-hover " style="margin:0px;padding:0px">
-@if (match.Factor != 1)
-{
-    <tr class="danger">
-        <td colspan="7" style="text-align:center">
-            Mecz punktowany x @match.Factor
-        </td>
-    </tr>
-    <tr class="danger">
-        <td width="23%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
-        <td width="10%" align="right" style="vertical-align:middle">
-            @match.HomeTeam.ShortName
-        </td>
-        <td width="8%" align="center">
-            <img src="@Url.Content("~/Content/Images/Flags/" + match.HomeTeam.ShortName + ".png")" width="30" height="30" />
-        </td>
-        <td width="18%" align="center" style="vertical-align:middle">
-            @if (match.Score != null)
-            {
-                <span>@match.Score.HomeScore.ToString():@match.Score.AwayScore.ToString()</span>
-            }
-            else
-            {
-                <span>n/d</span>
-            }
-        </td>
-        <td width="8%" align="center">
-            <img src="@Url.Content("~/Content/Images/Flags/" + match.AwayTeam.ShortName + ".png")" width="30" height="30" />
-        </td>
-        <td width="10%" align="left" style="vertical-align:middle">
-            @match.AwayTeam.ShortName
-        </td>
-        <td width="23%" align="right" style="vertical-align:middle">
-            @if (User.Identity.IsAuthenticated)
-            {
-                if (match.Bets.Any(p => p.User.UserName == User.Identity.Name))
-                {
-                    Bet bet = match.Bets.Single(p => p.User.UserName == User.Identity.Name);
-                    <span>| <b>@bet.HomeScore:@bet.AwayScore</b></span>
-                }
-                else
-                {
-                    <span>| <b>brak</b></span>
-                }
-            }
-        </td>
-    </tr>
-
-}
-else
-{
-                            <tr>
-                                <td width="23%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
-                                <td width="10%" align="right"  style="vertical-align:middle">
-                                    @match.HomeTeam.ShortName
-                                </td>
-                                <td width="8%" align="center">
-                                    <img src="@Url.Content("~/Content/Images/Flags/" + match.HomeTeam.ShortName + ".png")" width="30" height="30" />
-                                </td>
-                                <td width="18%" align="center" style="vertical-align:middle">
-                                    @if (match.Score != null)
-                                    {
-                                        <span>@match.Score.HomeScore.ToString():@match.Score.AwayScore.ToString()</span>
-                                    }
-                                    else
-                                    {
-                                        <span>n/d</span>
-                                    }
-                                </td>
-                                <td width="8%" align="center">
-                                    <img src="@Url.Content("~/Content/Images/Flags/" + match.AwayTeam.ShortName + ".png")" width="30" height="30" />
-                                </td>
-                                <td width="10%" align="left" style="vertical-align:middle">
-                                    @match.AwayTeam.ShortName
-                                </td>
-                                <td width="23%" align="right" style="vertical-align:middle">
-                                    @if (User.Identity.IsAuthenticated)
-                                    {
-                                        if (match.Bets.Any(p => p.User.UserName == User.Identity.Name))
-                                        {
-                                            Bet bet = match.Bets.Single(p => p.User.UserName == User.Identity.Name);
-                                            <span>| <b>@bet.HomeScore:@bet.AwayScore</b></span>
-                                        }
-                                        else
-                                        {
-                                            <span>| <b>brak</b></span>
-                                        }
-                                    }
-                                </td>
-                            </tr>
-}
-                        </table>
-                    </a>
-                    }
-                    else
-                    {
-                        <table class="table table-striped" style="margin:0px;padding:0px">
+                        <table class="table table-striped table-hover " style="margin:0px;padding:0px;table-layout: fixed;">
                             @if (match.Factor != 1)
                             {
-                                <tr class="danger">
-                                    <td colspan="7" style="text-align:center">
-                                        Mecz punktowany x @match.Factor
-                                    </td>
-                                </tr>
-                                <tr class="danger">
-                                    <td width="23%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
+                                <tr style="background-color: #d9edf7;">
+                                    <td width="15%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
                                     <td width="10%" align="right" style="vertical-align:middle">
                                         @match.HomeTeam.ShortName
                                     </td>
-                                    <td width="8%" align="center">
+                                    <td width="15%" align="center">
                                         <img src="@Url.Content("~/Content/Images/Flags/" + match.HomeTeam.ShortName + ".png")" width="30" height="30" />
                                     </td>
-                                    <td width="18%" align="center" style="vertical-align:middle">
+                                    <td width="20%" align="center" style="vertical-align:middle">
                                         @if (match.Score != null)
                                         {
                                             <span>@match.Score.HomeScore.ToString():@match.Score.AwayScore.ToString()</span>
@@ -365,23 +254,113 @@ else
                                             <span>n/d</span>
                                         }
                                     </td>
-                                    <td width="8%" align="center">
+                                    <td width="15%" align="center">
                                         <img src="@Url.Content("~/Content/Images/Flags/" + match.AwayTeam.ShortName + ".png")" width="30" height="30" />
                                     </td>
                                     <td width="10%" align="left" style="vertical-align:middle">
                                         @match.AwayTeam.ShortName
                                     </td>
-                                    <td width="23%" align="right" style="vertical-align:middle">
+                                    <td width="15%" align="right" style="vertical-align:middle">
                                         @if (User.Identity.IsAuthenticated)
                                         {
                                             if (match.Bets.Any(p => p.User.UserName == User.Identity.Name))
                                             {
                                                 Bet bet = match.Bets.Single(p => p.User.UserName == User.Identity.Name);
-                                                <span>| <b>@bet.HomeScore:@bet.AwayScore</b></span>
+                                                <span>|<b>@bet.HomeScore:@bet.AwayScore</b></span>
                                             }
                                             else
                                             {
-                                                <span>| <b>brak</b></span>
+                                                <span>|<b>x</b></span>
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td width="15%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
+                                    <td width="10%" align="right"  style="vertical-align:middle">
+                                        @match.HomeTeam.ShortName
+                                    </td>
+                                    <td width="15%" align="center">
+                                        <img src="@Url.Content("~/Content/Images/Flags/" + match.HomeTeam.ShortName + ".png")" width="30" height="30" />
+                                    </td>
+                                    <td width="20%" align="center" style="vertical-align:middle">
+                                        @if (match.Score != null)
+                                        {
+                                            <span>@match.Score.HomeScore.ToString():@match.Score.AwayScore.ToString()</span>
+                                        }
+                                        else
+                                        {
+                                            <span>n/d</span>
+                                        }
+                                    </td>
+                                    <td width="15%" align="center">
+                                        <img src="@Url.Content("~/Content/Images/Flags/" + match.AwayTeam.ShortName + ".png")" width="30" height="30" />
+                                    </td>
+                                    <td width="10%" align="left" style="vertical-align:middle">
+                                        @match.AwayTeam.ShortName
+                                    </td>
+                                    <td width="15%" align="right" style="vertical-align:middle">
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            if (match.Bets.Any(p => p.User.UserName == User.Identity.Name))
+                                            {
+                                                Bet bet = match.Bets.Single(p => p.User.UserName == User.Identity.Name);
+                                                <span>|<b>@bet.HomeScore:@bet.AwayScore</b></span>
+                                            }
+                                            else
+                                            {
+                                                <span>|<b>x</b></span>
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </a>
+                    }
+                    else
+                    {
+                        <table class="table table-striped" style="margin:0px;padding:0px;table-layout: fixed;">
+                            @if (match.Factor != 1)
+                            {
+                                <tr style="background-color: #d9edf7;">
+                                    <td width="15%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
+                                    <td width="10%" align="right" style="vertical-align:middle">
+                                        @match.HomeTeam.ShortName
+                                    </td>
+                                    <td width="15%" align="center">
+                                        <img src="@Url.Content("~/Content/Images/Flags/" + match.HomeTeam.ShortName + ".png")" width="30" height="30" />
+                                    </td>
+                                    <td width="20%" align="center" style="vertical-align:middle">
+                                        @if (match.Score != null)
+                                        {
+                                            <span>@match.Score.HomeScore.ToString():@match.Score.AwayScore.ToString()</span>
+                                        }
+                                        else
+                                        {
+                                            <span>n/d</span>
+                                        }
+                                    </td>
+                                    <td width="15%" align="center">
+                                        <img src="@Url.Content("~/Content/Images/Flags/" + match.AwayTeam.ShortName + ".png")" width="30" height="30" />
+                                    </td>
+                                    <td width="10%" align="left" style="vertical-align:middle">
+                                        @match.AwayTeam.ShortName
+                                    </td>
+                                    <td width="15%" align="right" style="vertical-align:middle">
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            if (match.Bets.Any(p => p.User.UserName == User.Identity.Name))
+                                            {
+                                                Bet bet = match.Bets.Single(p => p.User.UserName == User.Identity.Name);
+                                                <span>|<b>@bet.HomeScore:@bet.AwayScore</b></span>
+                                            }
+                                            else
+                                            {
+                                                <span>|<b>x</b></span>
                                             }
                                         }
                                     </td>
@@ -391,14 +370,14 @@ else
                             else
                             {
                                 <tr>
-                                    <td width="23%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
+                                    <td width="15%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
                                     <td width="10%" align="right" style="vertical-align:middle">
                                         @match.HomeTeam.ShortName
                                     </td>
-                                    <td width="8%" align="center">
+                                    <td width="15%" align="center">
                                         <img src="@Url.Content("~/Content/Images/Flags/" + match.HomeTeam.ShortName + ".png")" width="30" height="30" />
                                     </td>
-                                    <td width="18%" align="center" style="vertical-align:middle">
+                                    <td width="20%" align="center" style="vertical-align:middle">
                                         @if (match.Score != null)
                                         {
                                             <span>@match.Score.HomeScore.ToString():@match.Score.AwayScore.ToString()</span>
@@ -408,23 +387,23 @@ else
                                             <span>n/d</span>
                                         }
                                     </td>
-                                    <td width="8%" align="center">
+                                    <td width="15%" align="center">
                                         <img src="@Url.Content("~/Content/Images/Flags/" + match.AwayTeam.ShortName + ".png")" width="30" height="30" />
                                     </td>
                                     <td width="10%" align="left" style="vertical-align:middle">
                                         @match.AwayTeam.ShortName
                                     </td>
-                                    <td width="23%" align="right" style="vertical-align:middle">
+                                    <td width="15%" align="right" style="vertical-align:middle">
                                         @if (User.Identity.IsAuthenticated)
                                         {
                                             if (match.Bets.Any(p => p.User.UserName == User.Identity.Name))
                                             {
                                                 Bet bet = match.Bets.Single(p => p.User.UserName == User.Identity.Name);
-                                                <span>| <b>@bet.HomeScore:@bet.AwayScore</b></span>
+                                                <span>|<b>@bet.HomeScore:@bet.AwayScore</b></span>
                                             }
                                             else
                                             {
-                                                <span>| <b>brak</b></span>
+                                                <span>|<b>x</b></span>
                                             }
                                         }
                                     </td>
@@ -438,11 +417,11 @@ else
     </div>
 }
 
-<h3 style="text-align:center">Ostatnie mecze:</h3>
+<h3 style="text-align:center">Rozegrane mecze:</h3>
 @foreach (DateTime date in beforeDateList)
 {
     <div style="max-width:682px;margin:auto">
-        <div class="panel" style="padding-bottom:0px;margin-bottom:0px;padding-top:0px;margin-top:0px">
+        <div class="panel panel-primary" style="padding-bottom:0px;margin-bottom:0px;padding-top:0px;margin-top:0px">
             <div class="panel-heading">
                 <h3 class="panel-title" style="text-align:center">@date.Date.ToShortDateString()</h3>
             </div>
@@ -454,119 +433,18 @@ else
                     @if (Request.IsAuthenticated)
                     {
                     <a href="@Url.Action("SingleMatch", "Home", new { id = match.Id })">
-                        <table class="table table-striped table-hover " style="margin:0px;padding:0px">
-@if (match.Factor != 1)
-{
-    <tr class="danger">
-        <td colspan="7" style="text-align:center">
-            Mecz punktowany x @match.Factor
-        </td>
-    </tr>
-    <tr class="danger">
-        <td width="23%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
-        <td width="10%" align="right" style="vertical-align:middle">
-            @match.HomeTeam.ShortName
-        </td>
-        <td width="8%" align="center">
-            <img src="@Url.Content("~/Content/Images/Flags/" + match.HomeTeam.ShortName + ".png")" width="30" height="30" />
-        </td>
-        <td width="18%" align="center" style="vertical-align:middle">
-            @if (match.Score != null)
-            {
-                <span>@match.Score.HomeScore.ToString():@match.Score.AwayScore.ToString()</span>
-            }
-            else
-            {
-                <span>n/d</span>
-            }
-        </td>
-        <td width="8%" align="center">
-            <img src="@Url.Content("~/Content/Images/Flags/" + match.AwayTeam.ShortName + ".png")" width="30" height="30" />
-        </td>
-        <td width="10%" align="left" style="vertical-align:middle">
-            @match.AwayTeam.ShortName
-        </td>
-        <td width="23%" align="right" style="vertical-align:middle">
-            @if (User.Identity.IsAuthenticated)
-            {
-                if (match.Bets.Any(p => p.User.UserName == User.Identity.Name))
-                {
-                    Bet bet = match.Bets.Single(p => p.User.UserName == User.Identity.Name);
-                    <span>| <b>@bet.HomeScore:@bet.AwayScore</b></span>
-                }
-                else
-                {
-                    <span>| <b>brak</b></span>
-                }
-            }
-        </td>
-    </tr>
-
-}
-else
-{
-                            <tr>
-                                <td width="23%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
-                                <td width="10%" align="right" style="vertical-align:middle">
-                                    @match.HomeTeam.ShortName
-                                </td>
-                                <td width="8%" align="center">
-                                    <img src="@Url.Content("~/Content/Images/Flags/" + match.HomeTeam.ShortName + ".png")" width="30" height="30" />
-                                </td>
-                                <td width="18%" align="center" style="vertical-align:middle">
-                                    @if (match.Score != null)
-                                    {
-                                        <span>@match.Score.HomeScore.ToString():@match.Score.AwayScore.ToString()</span>
-                                    }
-                                    else
-                                    {
-                                        <span>n/d</span>
-                                    }
-                                </td>
-                                <td width="8%" align="center">
-                                    <img src="@Url.Content("~/Content/Images/Flags/" + match.AwayTeam.ShortName + ".png")" width="30" height="30" />
-                                </td>
-                                <td width="10%" align="left" style="vertical-align:middle">
-                                    @match.AwayTeam.ShortName
-                                </td>
-                                <td width="23%"  align="right" style="vertical-align:middle">
-                                    @if (User.Identity.IsAuthenticated)
-                                    {
-                                        if (match.Bets.Any(p => p.User.UserName == User.Identity.Name))
-                                        {
-                                            Bet bet = match.Bets.Single(p => p.User.UserName == User.Identity.Name);
-                                            <span>| <b>@bet.HomeScore:@bet.AwayScore</b></span>
-                                        }
-                                        else
-                                        {
-                                            <span>| <b>brak</b></span>
-                                        }
-                                    }
-                                </td>
-                            </tr>
-}
-                        </table>
-                    </a>
-                    }
-                    else
-                    {
-                        <table class="table table-striped" style="margin:0px;padding:0px">
+                        <table class="table table-striped table-hover " style="margin:0px;padding:0px;table-layout: fixed;">
                             @if (match.Factor != 1)
                             {
-                                <tr class="danger">
-                                    <td colspan="7" style="text-align:center">
-                                        Mecz punktowany x @match.Factor
-                                    </td>
-                                </tr>
-                                <tr class="danger">
-                                    <td width="23%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
+                                <tr style="background-color: #d9edf7;">
+                                    <td width="15%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
                                     <td width="10%" align="right" style="vertical-align:middle">
                                         @match.HomeTeam.ShortName
                                     </td>
-                                    <td width="8%" align="center">
+                                    <td width="15%" align="center">
                                         <img src="@Url.Content("~/Content/Images/Flags/" + match.HomeTeam.ShortName + ".png")" width="30" height="30" />
                                     </td>
-                                    <td width="18%" align="center" style="vertical-align:middle">
+                                    <td width="20%" align="center" style="vertical-align:middle">
                                         @if (match.Score != null)
                                         {
                                             <span>@match.Score.HomeScore.ToString():@match.Score.AwayScore.ToString()</span>
@@ -576,23 +454,114 @@ else
                                             <span>n/d</span>
                                         }
                                     </td>
-                                    <td width="8%" align="center">
+                                    <td width="15%" align="center">
                                         <img src="@Url.Content("~/Content/Images/Flags/" + match.AwayTeam.ShortName + ".png")" width="30" height="30" />
                                     </td>
                                     <td width="10%" align="left" style="vertical-align:middle">
                                         @match.AwayTeam.ShortName
                                     </td>
-                                    <td width="23%" align="right" style="vertical-align:middle">
+                                    <td width="15%" align="right" style="vertical-align:middle">
                                         @if (User.Identity.IsAuthenticated)
                                         {
                                             if (match.Bets.Any(p => p.User.UserName == User.Identity.Name))
                                             {
                                                 Bet bet = match.Bets.Single(p => p.User.UserName == User.Identity.Name);
-                                                <span>| <b>@bet.HomeScore:@bet.AwayScore</b></span>
+                                                <span>|<b>@bet.HomeScore:@bet.AwayScore</b></span>
                                             }
                                             else
                                             {
-                                                <span>| <b>brak</b></span>
+                                                <span>|<b>x</b></span>
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+
+                            }
+                            else
+                            {
+                                                        <tr>
+                                                            <td width="15%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
+                                                            <td width="10%" align="right" style="vertical-align:middle">
+                                                                @match.HomeTeam.ShortName
+                                                            </td>
+                                                            <td width="15%" align="center">
+                                                                <img src="@Url.Content("~/Content/Images/Flags/" + match.HomeTeam.ShortName + ".png")" width="30" height="30" />
+                                                            </td>
+                                                            <td width="20%" align="center" style="vertical-align:middle">
+                                                                @if (match.Score != null)
+                                                                {
+                                                                    <span>@match.Score.HomeScore.ToString():@match.Score.AwayScore.ToString()</span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span>n/d</span>
+                                                                }
+                                                            </td>
+                                                            <td width="15%" align="center">
+                                                                <img src="@Url.Content("~/Content/Images/Flags/" + match.AwayTeam.ShortName + ".png")" width="30" height="30" />
+                                                            </td>
+                                                            <td width="10%" align="left" style="vertical-align:middle">
+                                                                @match.AwayTeam.ShortName
+                                                            </td>
+                                                            <td width="15%"  align="right" style="vertical-align:middle">
+                                                                @if (User.Identity.IsAuthenticated)
+                                                                {
+                                                                    if (match.Bets.Any(p => p.User.UserName == User.Identity.Name))
+                                                                    {
+                                                                        Bet bet = match.Bets.Single(p => p.User.UserName == User.Identity.Name);
+                                                                        <span>|<b>@bet.HomeScore:@bet.AwayScore</b></span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span>|<b>x</b></span>
+                                                                    }
+                                                                }
+                                                            </td>
+                                                        </tr>
+                            }
+                        </table>
+                    </a>
+                    }
+                    else
+                    {
+                        <table class="table table-striped" style="margin:0px;padding:0px;table-layout: fixed;">
+                            @if (match.Factor != 1)
+                            {
+                                <tr style="background-color: #d9edf7;">
+                                    <td width="15%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
+                                    <td width="10%" align="right" style="vertical-align:middle">
+                                        @match.HomeTeam.ShortName
+                                    </td>
+                                    <td width="15%" align="center">
+                                        <img src="@Url.Content("~/Content/Images/Flags/" + match.HomeTeam.ShortName + ".png")" width="30" height="30" />
+                                    </td>
+                                    <td width="20%" align="center" style="vertical-align:middle">
+                                        @if (match.Score != null)
+                                        {
+                                            <span>@match.Score.HomeScore.ToString():@match.Score.AwayScore.ToString()</span>
+                                        }
+                                        else
+                                        {
+                                            <span>n/d</span>
+                                        }
+                                    </td>
+                                    <td width="15%" align="center">
+                                        <img src="@Url.Content("~/Content/Images/Flags/" + match.AwayTeam.ShortName + ".png")" width="30" height="30" />
+                                    </td>
+                                    <td width="10%" align="left" style="vertical-align:middle">
+                                        @match.AwayTeam.ShortName
+                                    </td>
+                                    <td width="15%" align="right" style="vertical-align:middle">
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            if (match.Bets.Any(p => p.User.UserName == User.Identity.Name))
+                                            {
+                                                Bet bet = match.Bets.Single(p => p.User.UserName == User.Identity.Name);
+                                                <span>|<b>@bet.HomeScore:@bet.AwayScore</b></span>
+                                            }
+                                            else
+                                            {
+                                                <span>|<b>x</b></span>
                                             }
                                         }
                                     </td>
@@ -602,14 +571,14 @@ else
                             else
                             {
                                 <tr>
-                                    <td width="23%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
+                                    <td width="15%" style="vertical-align:middle">@match.Date.ToString("HH:mm")</td>
                                     <td width="10%" align="right" style="vertical-align:middle">
                                         @match.HomeTeam.ShortName
                                     </td>
-                                    <td width="8%" align="center">
+                                    <td width="15%" align="center">
                                         <img src="@Url.Content("~/Content/Images/Flags/" + match.HomeTeam.ShortName + ".png")" width="30" height="30" />
                                     </td>
-                                    <td width="18%" align="center" style="vertical-align:middle">
+                                    <td width="20%" align="center" style="vertical-align:middle">
                                         @if (match.Score != null)
                                         {
                                             <span>@match.Score.HomeScore.ToString():@match.Score.AwayScore.ToString()</span>
@@ -619,23 +588,23 @@ else
                                             <span>n/d</span>
                                         }
                                     </td>
-                                    <td width="8%" align="center">
+                                    <td width="15%" align="center">
                                         <img src="@Url.Content("~/Content/Images/Flags/" + match.AwayTeam.ShortName + ".png")" width="30" height="30" />
                                     </td>
                                     <td width="10%" align="left" style="vertical-align:middle">
                                         @match.AwayTeam.ShortName
                                     </td>
-                                    <td width="23%" align="right" style="vertical-align:middle">
+                                    <td width="15%" align="right" style="vertical-align:middle">
                                         @if (User.Identity.IsAuthenticated)
                                         {
                                             if (match.Bets.Any(p => p.User.UserName == User.Identity.Name))
                                             {
                                                 Bet bet = match.Bets.Single(p => p.User.UserName == User.Identity.Name);
-                                                <span>| <b>@bet.HomeScore:@bet.AwayScore</b></span>
+                                                <span>|<b>@bet.HomeScore:@bet.AwayScore</b></span>
                                             }
                                             else
                                             {
-                                                <span>| <b>brak</b></span>
+                                                <span>|<b>x</b></span>
                                             }
                                         }
                                     </td>

@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "Zasady";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="panel panel-danger">
+    <div class="panel-heading">
+        <h3 class="panel-title">Nagroda</h3>
+    </div>
+    <div class="panel-body">
+        <ul>
+            <li>W grze o nagrodę biorą udział tylko użytkownicy, którzy zarejestrowali się w serwisie zaznaczając opcję "PIWO".</li>
+            <li>Wysokość nagrody dla zwycięzcy jest zależna od ilości użytkowników, którzy zarejestrowali się zaznaczając opcję "PIWO".</li>
+        </ul>
+    </div>
+</div>
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Obstawianie</h3>
+    </div>
+    <div class="panel-body">
+        <ul>
+            <li>Mecze można obstawiać do rozpoczęcia meczu. Po gwizdku rozpoczynającym mecz opcja ta zostaje wyłączona.</li>
+            <li>Obstawiamy tylko regulaminowy czas gry dogrywki lub karne nie podlegają obstawianiu.</li>
+            <li>Punktacja:
+                <ul style="list-style-type:square;list-style-position: inside;padding-left:0;">
+                    <li>Trafiony wynik – <b>25 pkt</b></li>
+                    <li>Trafiony rezultat (zwycięstwo/remis/porażka) – <b>5 pkt</b></li>
+                    <li>Nietrafiony wynik – <b>1 pkt</b>(w celu nagrodzenia systematyczności typowania)</li>
+                    <li>Za każdy mecz można otrzymać tylko jeden rodzaj punktów (punkty się nie sumują).</li>
+                    <li>Dodatkowo punktacja we wszystkich meczach Polaków oraz w półfinałach jest mnożona razy 2 natomiast w finale razy 3. Mecze te oznaczone są kolorem niebieskim na liście meczy.</li>
+                </ul>
+            </li>
+            <li>Mecze możemy obstawiać tylko po zalogowaniu, klikając interesujący nas mecz a następnie wpisując ilość bramek w okienkach pod odpowiednimi drużynami. Typ zapisujemy klikając przycisk „Obstaw!”.</li>
+            <li>Nasz typ możemy dowolnie zmieniać do czasu rozpoczęcia meczu (ta sama procedura co w poprzednim punkcie)</li>
+            <li>Po zalogowaniu nasz typ będzie widoczny na liście meczy po prawej stronie danego meczu w przypadku braku typu będzie widoczny „x”.</li>
+        </ul>
+    </div>
+</div>

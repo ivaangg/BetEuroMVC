@@ -172,11 +172,7 @@ namespace BetEuro.Controllers
                     Match m = db.Matches.Single(p => p.Id == b.MatchId);
                     
                     if (m.Score != null)
-                    {
-                        // BET POINTS
-                        lb.PlacedBets++;
-                        lb.Points += m.Factor.Value * db.Points.Single(p => p.Id == "Bet").Points;
-
+                    {                       
                         if (m.Score.HomeScore == b.HomeScore && m.Score.AwayScore == b.AwayScore)
                         {
                             //SCORE
@@ -188,6 +184,12 @@ namespace BetEuro.Controllers
                             //RESULT
                             lb.ResultHit++;
                             lb.Points += m.Factor.Value * db.Points.Single(p => p.Id == "Result").Points;                            
+                        }
+                        else
+                        {
+                            // BET POINTS
+                            lb.PlacedBets++;
+                            lb.Points += m.Factor.Value * db.Points.Single(p => p.Id == "Bet").Points;
                         }
                     }
 

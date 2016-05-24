@@ -49,15 +49,15 @@ namespace BetEuro.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Username")]        
+        [Display(Name = "Nazwa użytkownika")]        
         public string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Hasło")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Pamiętaj mnie?")]
         public bool RememberMe { get; set; }
     }
 
@@ -75,14 +75,14 @@ namespace BetEuro.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "Hasło musi mieć conajmniej {2} znaków długości.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Hasło")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Potwierdź hasło")]
+        [Compare("Password", ErrorMessage = "Wprowadzane hasła nie są identyczne.")]
         public string ConfirmPassword { get; set; }
 
         [Required]
@@ -92,7 +92,7 @@ namespace BetEuro.Models
         public bool isActive { get; set; }
 
         [Required]
-        [StringLength(200, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 10)]
+        [StringLength(200, ErrorMessage = "Komentarz musi mieć co najmniej 10 znaków (maksymalnie 200) i musi zawierać krótką informację kim jesteś i od kogo masz informację o serwisie.", MinimumLength = 10)]
         [Display(Name = "Komentarz")]
         public string Comment { get; set; }
     }
@@ -105,14 +105,14 @@ namespace BetEuro.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "Hasło musi mieć conajmniej {2} znaków długości.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Password", ErrorMessage = "Wprowadzane hasła nie są identyczne.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }

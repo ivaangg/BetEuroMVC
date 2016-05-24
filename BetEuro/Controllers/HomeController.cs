@@ -11,14 +11,21 @@ using BetEuro;
 
 namespace BetEuro.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private BEEntities db = new BEEntities();
 
+        [AllowAnonymous]
         public async Task<ActionResult> Index()
         {
             var matches = db.Matches.Include(m => m.AwayTeam).Include(m => m.HomeTeam).Include(m => m.Score);
             return View(await matches.ToListAsync());
+        }
+
+        public async Task<ActionResult> Rules()
+        {
+            return View();
         }
 
         public async Task<ActionResult> Matches()

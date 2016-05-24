@@ -13,14 +13,14 @@
                 <th>
                     Login
                 </th>
-                <th>
-                    Mecze
+                <th title="Obstawiony ale nie trafiony">
+                    -
                 </th>
-                <th>
-                    Wynik
+                <th title="Trafiony rezultat ale nie wynik">
+                    +
                 </th>
-                <th>
-                    1X2
+                <th title="Trafiony wynik">
+                    :)
                 </th>
                 <th>
                     Punkty
@@ -34,14 +34,14 @@
                     <td>
                         @item.User.UserName
                     </td>
-                    <td>
+                    <td title="Obstawiony ale nie trafiony">
                         @item.PlacedBets
                     </td>
-                    <td>
-                        @item.ScoreHit
-                    </td>
-                    <td>
+                    <td title="Trafiony rezultat ale nie wynik">
                         @item.ResultHit
+                    </td>
+                    <td title="Trafiony wynik">
+                        @item.ScoreHit
                     </td>
                     <td>
                         @item.Points
@@ -58,14 +58,14 @@
                 <th>
                     Login
                 </th>
-                <th>
-                    Mecze
+                <th title="Obstawiony ale nie trafiony">
+                    -
                 </th>
-                <th>
-                    Wynik
+                <th title="Trafiony rezultat ale nie wynik">
+                    +
                 </th>
-                <th>
-                    1X2
+                <th title="Trafiony wynik">
+                    :)
                 </th>
                 <th>
                     Punkty
@@ -73,20 +73,21 @@
                 <th></th>
             </tr>
 
+
             @foreach (var item in Model.OrderBy(p => p.Points).ThenBy(p => p.ScoreHit).ThenBy(p => p.ResultHit).ThenBy(p => p.PlacedBets))
             {
                 <tr>
                     <td>
                         @item.User.UserName
                     </td>
-                    <td>
+                    <td title="Obstawiony ale nie trafiony">
                         @item.PlacedBets
                     </td>
-                    <td>
-                        @item.ScoreHit
-                    </td>
-                    <td>
+                    <td title="Trafiony rezultat ale nie wynik">
                         @item.ResultHit
+                    </td>
+                    <td title="Trafiony wynik">
+                        @item.ScoreHit
                     </td>
                     <td>
                         @item.Points

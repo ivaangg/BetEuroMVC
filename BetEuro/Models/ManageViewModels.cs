@@ -20,7 +20,7 @@ namespace BetEuro.Models
     public class SetPasswordViewModel
     {
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "Hasło musi mieć conajmniej {2} znaków długości.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Nowe hasło")]
         public string NewPassword { get; set; }
@@ -35,18 +35,18 @@ namespace BetEuro.Models
     {
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Current password")]
+        [Display(Name = "Obecne hasło")]
         public string OldPassword { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "Hasło musi mieć conajmniej {2} znaków długości.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "New password")]
+        [Display(Name = "Nowe hasło")]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm new password")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        [Display(Name = "Potwierdź nowe hasło")]
+        [Compare("NewPassword", ErrorMessage = "Wprowadzane hasła nie są identyczne.")]
         public string ConfirmPassword { get; set; }
     }
 }

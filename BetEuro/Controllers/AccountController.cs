@@ -207,6 +207,12 @@ namespace BetEuro.Controllers
                 return View("Error");
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
+
+            if (result.Succeeded)
+            {
+
+            }
+
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
