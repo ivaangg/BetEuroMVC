@@ -23,6 +23,7 @@ namespace BetEuro.Controllers
             return View(await matches.ToListAsync());
         }
 
+        [AllowAnonymous]
         public async Task<ActionResult> Rules()
         {
             return View();

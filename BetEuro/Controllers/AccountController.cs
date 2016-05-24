@@ -182,10 +182,12 @@ namespace BetEuro.Controllers
                         new { userId = user.Id, code = code },
                         protocol: Request.Url.Scheme);
 
+                    
+
                     await UserManager.SendEmailAsync(
                         user.Id,
                         "Aktywuj swoje konto na beteuro.com.pl",
-                        "Kliknij poniższy link, żeby aktywować swoje konto: " + Environment.NewLine + callbackUrl);
+                        "<a href=\"" + callbackUrl + "\">Kliknij tutaj, żeby aktywować konto.</a>");
 
                     ViewBag.Link = callbackUrl;
                     return View("DisplayEmail");
@@ -210,6 +212,13 @@ namespace BetEuro.Controllers
 
             if (result.Succeeded)
             {
+                var user = UserManager.FindById(userId);
+                var admin = UserManager.FindByEmail("ivaan84@gmail.com");
+
+                UserManager.SendEmail(admin.Id, "Nowy użytkownik",
+                        "Pojawił się nowy user w systemie:" + Environment.NewLine +
+                        "Username: " + user.UserName + Environment.NewLine +
+                        "Komentarz: " + user.Comment);
 
             }
 

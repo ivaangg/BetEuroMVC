@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BetEuro;
+using System.Net.Mail;
 
 namespace BetEuro.Controllers
 {
@@ -88,7 +89,19 @@ namespace BetEuro.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(user).State = EntityState.Modified;
+                if (user.isActive && !db.Users.Single(p => p.Id == user.Id).isActive && user.Piwo)
+                {
+                    string message =
+                        "Witam," + Environment.NewLine +
+                        "Opcja PIWO pozwala na grę o nagrodę wpłacając 10 PLN na konto podane poniżej przeznaczasz 8 PLN do puli nagród oraz 2 PLN na utrzymanie serwisu. Nagrodę otrzyma osoba, która uzbiera najwięcej punktów po zakończeniu mistrzostw. O nagrodę grają tylko osoby, które wpłaciły 10 PLN. Poniżej dane do przelewu:" + Environment.NewLine +
+                        "Dane do przelewu:" + Environment.NewLine +
+                        "Łukasz Iwankow" + Environment.NewLine +
+                        "50 1020 5558 1111 1440 2950 0042" + Environment.NewLine +
+                        "Tytuł wiadomości: Twój username lub mail.";
+                    await SendMail(db.Users.Single(p => p.Id == user.Id).Email, "PIWO - aktywacja", message);
+                }
+                db.Users.Single(p => p.Id == user.Id).isActive = user.isActive;
+                db.Users.Single(p => p.Id == user.Id).Piwo = user.Piwo;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
@@ -119,8 +132,11 @@ namespace BetEuro.Controllers
             User user = await db.Users.FindAsync(id);
             foreach (Bet bet in db.Bets.Where(p => p.UserId == id))
                 db.Bets.Remove(bet);
-            Leaderboard ld = await db.Leaderboards.SingleAsync(p => p.UserId == id);
-            db.Leaderboards.Remove(ld);
+            if (db.Leaderboards.Any(p => p.UserId == id))
+            {
+                Leaderboard ld = await db.Leaderboards.SingleAsync(p => p.UserId == id);
+                db.Leaderboards.Remove(ld);
+            }
             db.Users.Remove(user);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -133,6 +149,42 @@ namespace BetEuro.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private async Task SendMail(string email, string subject, string body)
+        {
+            var credentialUserName = "ivaan.development@gmail.com";
+            var sentFrom = "beteuro.com.pl";
+            var pwd = "para$OLKA17";
+
+            MailAddress from = new MailAddress(credentialUserName, sentFrom);
+            MailAddress to = new MailAddress(email);
+
+            // Configure the client:
+            System.Net.Mail.SmtpClient client =
+                new System.Net.Mail.SmtpClient("smtp.gmail.com");
+
+            client.Port = 587;
+            client.EnableSsl = true;
+            client.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
+            client.UseDefaultCredentials = false;
+
+            // Creatte the credentials:
+            System.Net.NetworkCredential credentials =
+                new System.Net.NetworkCredential(credentialUserName, pwd);
+
+            client.EnableSsl = true;
+            client.Credentials = credentials;
+
+            // Create the message:
+            var mail =
+                new System.Net.Mail.MailMessage(from, to);
+
+            mail.Subject = subject;
+            mail.Body = body;
+
+            // Send:
+            await client.SendMailAsync(mail);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace BetEuro.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Potwierdź nowe hasło")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        [Compare("NewPassword", ErrorMessage = "Wprowadzane hasła nie są identyczne.")]
         public string ConfirmPassword { get; set; }
     }
 
