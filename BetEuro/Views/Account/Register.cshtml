@@ -5,6 +5,21 @@
 
 <h2>@ViewBag.Title.</h2>
 
+<div class="panel panel-danger">
+    <div class="panel-heading">
+        <h3 class="panel-title">Nagroda</h3>
+    </div>
+    <div class="panel-body">
+        <ul>
+            <li>Opcja <b>PIWO</b> – Wymaga opłaty rejestracynje w wysokości 10 PLN, z której 80% zostanie przeznaczone na nagrodę dla zwycięzcy a 20% na utrzymanie serwisu. Po zaznaczeniu tej opcji dalsze insturkcje dotyczące dokanania płatności zostaną wysłane drogą mailową. Nagrodę otrzyma osoba, która zarejestrowała się wybierając opcję "PIWO” oraz zdobyła największą liczbę punktów po rozegraniu wszystkich meczy na Mistrzostwach Europy 2016.</li>
+            <li>W polu <b>KOMENTARZ</b> należy umieścić nick lub dane osoby, która zaprosiła Cię do uczestnictwa w zabawie oraz krótką informację kim jesteś. Weryfikacja ta ma na celu uniknięcie tworzenia fałyszwych kont oraz dołączania osób spoza grona znajomych.</li>
+            <li>Po przeprowadzeniu poprawnej rejestracji otrzymasz maila z linkiem aktywacyjnym. Po kliknięciu w link zostaną przesłane informacje do administratora celem weryfikacji danych personalnych, jeżeli została zaznaczona opcja "PIWO", otrzymasz również mail zwrotny wraz z dalszą procedurą.</li>
+            <li>Weryfikacją polega na sprawdzeniu danych przedstawionych w polu „KOMENTARZ”, administrator określa czy dane przedstawione w tym polu są poprawne, wówczas finalzuje proces rejestracji a konto zostaje w pełni aktywowane.</li>
+            <li>Weryfikacja osób zarejestrowanych z zaznaczoną opcją "PIWO" zostanie sfinalizowana dopiero po zakończeniu procedury opisanej w wcześniej wspomnianym mailu.</li>
+        </ul>
+    </div>
+</div>
+
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
