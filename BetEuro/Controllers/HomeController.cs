@@ -29,6 +29,12 @@ namespace BetEuro.Controllers
             return View();
         }
 
+        public async Task<ActionResult> UserBets(string userName)
+        {
+            var bets = db.Bets.Where(p => p.User.UserName == userName && p.Match.Date < DateTime.Now).OrderByDescending(p => p.Match.Date);
+            return View(await bets.ToListAsync());
+        }
+
         public async Task<ActionResult> Matches()
         {
             var matches = db.Matches.Include(m => m.AwayTeam).Include(m => m.HomeTeam).Include(m => m.Score);
@@ -126,7 +132,8 @@ namespace BetEuro.Controllers
 
 
                 await db.SaveChangesAsync();
-                return View("SingleMatch", db.Matches.Single(p => p.Id == matchId));
+                var matches = db.Matches.Include(m => m.AwayTeam).Include(m => m.HomeTeam).Include(m => m.Score);
+                return View("Matches",await matches.ToListAsync());
             }
             else
             {

@@ -64,7 +64,7 @@ namespace BetEuro.Models
     public class RegisterViewModel
     {
         [Required]
-        [StringLength(10, ErrorMessage = "Nazwa użytkownika musi mieć conajmniej {2} znaki, maksymalnie {0}", MinimumLength = 4)]
+        [StringLength(12, ErrorMessage = "Nazwa użytkownika musi mieć conajmniej {2} znaki, maksymalnie 12", MinimumLength = 4)]
         [DataType(DataType.Text)]
         [Display(Name = "Nazwa użytkownika")]
         public string UserName { get; set; }

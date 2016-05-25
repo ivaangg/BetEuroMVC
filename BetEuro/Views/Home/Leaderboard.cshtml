@@ -28,11 +28,11 @@
                 <th></th>
             </tr>
 
-            @foreach (var item in Model.Where(p => p.User.Piwo).OrderBy(p => p.Points).ThenBy(p => p.ScoreHit).ThenBy(p => p.ResultHit).ThenBy(p => p.PlacedBets))
+            @foreach (var item in Model.Where(p => p.User.Piwo).OrderByDescending(p => p.Points).ThenByDescending(p => p.ScoreHit).ThenByDescending(p => p.ResultHit).ThenByDescending(p => p.PlacedBets))
             {
                 <tr>
                     <td>
-                        @item.User.UserName
+                        @Html.ActionLink(@item.User.UserName, "UserBets", "Home", new { userName = @item.User.UserName }, null)
                     </td>
                     <td title="Obstawiony ale nie trafiony">
                         @item.PlacedBets
@@ -74,11 +74,11 @@
             </tr>
 
 
-            @foreach (var item in Model.OrderBy(p => p.Points).ThenBy(p => p.ScoreHit).ThenBy(p => p.ResultHit).ThenBy(p => p.PlacedBets))
+            @foreach (var item in Model.OrderByDescending(p => p.Points).ThenByDescending(p => p.ScoreHit).ThenByDescending(p => p.ResultHit).ThenByDescending(p => p.PlacedBets))
             {
                 <tr>
                     <td>
-                        @item.User.UserName
+                        @Html.ActionLink(@item.User.UserName, "UserBets", "Home", new { userName = @item.User.UserName }, null)
                     </td>
                     <td title="Obstawiony ale nie trafiony">
                         @item.PlacedBets

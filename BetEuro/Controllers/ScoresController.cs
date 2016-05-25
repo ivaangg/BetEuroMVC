@@ -149,6 +149,9 @@ namespace BetEuro.Controllers
             Score score = await db.Scores.FindAsync(id);
             db.Scores.Remove(score);
             await db.SaveChangesAsync();
+
+            UpdateLeaderboard();
+
             return RedirectToAction("Index");
         }
 

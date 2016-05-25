@@ -1,0 +1,150 @@
+﻿@using Microsoft.AspNet.Identity
+@model IEnumerable<BetEuro.Bet>
+
+@{
+    ViewBag.Title = "UserBets";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model.Count() != 0)
+{
+    if (User.Identity.Name == Model.First().User.UserName)
+    {
+        <h4>@Model.First().User.UserName - twoje wyniki:</h4>
+    }
+    else
+    {
+        <h4>Wyniki użytkownika: @Model.First().User.UserName</h4>
+    }
+    <table class="table table-striped " style="margin:0px;padding:0px;table-layout: fixed;">
+        <tr class="info">
+            <th>Data</th>
+            <th>Drużyny</th>
+            <th>Wynik</th>
+            <th>Punkty</th>
+            <th>Typ</th>            
+        </tr>
+        @foreach (Bet b in Model)
+        {
+            <tr class="info">
+                <td>@b.Match.Date.ToShortDateString()</td>
+                <td>@b.Match.HomeTeam.ShortName - @b.Match.AwayTeam.ShortName</td>  
+                              
+                @if (b.Match.Score != null)
+                {
+                    <td>@b.Match.Score.HomeScore - @b.Match.Score.AwayScore</td>
+                }
+                else
+                {
+                    <td>0 - 0</td>
+                }
+
+                @if (b.Match.Score == null)
+                {
+                    if (b.HomeScore == 0 && b.AwayScore == 0)
+                    {
+                        if (b.Match.Factor == 1)
+                        {
+                            <td>25</td>
+                        }
+                        else if (b.Match.Factor == 2)
+                        {
+                            <td>50</td>
+                        }
+                        else
+                        {
+                            <td>75</td>
+                        }
+                    }
+                    else if (b.Result == 0)
+                    {
+                        if (b.Match.Factor == 1)
+                        {
+                            <td>5</td>
+                        }
+                        else if (b.Match.Factor == 2)
+                        {
+                            <td>10</td>
+                        }
+                        else
+                        {
+                            <td>15</td>
+                        }
+                    }
+                    else
+                    {
+                        if (b.Match.Factor == 1)
+                        {
+                            <td>1</td>
+                        }
+                        else if (b.Match.Factor == 2)
+                        {
+                            <td>2</td>
+                        }
+                        else
+                        {
+                            <td>3</td>
+                        }
+                    }
+                }
+                else
+                {
+                    if (b.HomeScore == b.Match.Score.HomeScore && b.AwayScore == b.Match.Score.AwayScore)
+                    {
+                        if (b.Match.Factor == 1)
+                        {
+                            <td>25</td>
+                        }
+                        else if (b.Match.Factor == 2)
+                        {
+                            <td>50</td>
+                        }
+                        else
+                        {
+                            <td>75</td>
+                        }
+                    }
+                    else if (b.Result == b.Match.Score.Result)
+                    {
+                        if (b.Match.Factor == 1)
+                        {
+                            <td>5</td>
+                        }
+                        else if (b.Match.Factor == 2)
+                        {
+                            <td>10</td>
+                        }
+                        else
+                        {
+                            <td>15</td>
+                        }
+                    }
+                    else
+                    {
+                        if (b.Match.Factor == 1)
+                        {
+                            <td>1</td>
+                        }
+                        else if (b.Match.Factor == 2)
+                        {
+                            <td>2</td>
+                        }
+                        else
+                        {
+                            <td>3</td>
+                        }
+                    }
+                }
+                <td>@b.HomeScore - @b.AwayScore</td>                
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <h4>Brak wyników - @Request.Params["userName"]</h4>
+}
+
+
+
+

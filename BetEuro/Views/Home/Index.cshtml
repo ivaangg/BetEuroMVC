@@ -13,16 +13,16 @@
     IEnumerable<DateTime> beforeDateList = beforeList.Select(p => p.Date.Date).Distinct();
     IEnumerable<DateTime> afterDateList = afterList.Select(p => p.Date.Date).Distinct();
     IEnumerable<Match> nowList = Model.Where(p => p.Date < now && p.Date.AddHours(2) > now).OrderByDescending(p => p.Date);
-        }
+}
 
 @if (nowList.Count() > 0)
 {
-<h3 style="text-align:center">Trwające mecze:</h3>
+<h4 style="text-align:center">Trwające mecze:</h4>
 
     <div style="max-width:682px;margin:auto">
         <div class="panel panel-primary" style="padding-bottom:0px;margin-bottom:0px;padding-top:0px;margin-top:0px">
             <div class="panel-heading">
-                <h3 class="panel-title" style="text-align:center">@now.Date.ToShortDateString()</h3>
+                <h4 class="panel-title" style="text-align:center">@now.Date.ToShortDateString()</h4>
             </div>
         </div>
         <ul style="list-style-type:none;margin:0px;padding:0px">
@@ -217,13 +217,13 @@
     </div>
 }
 
-<h3 style="text-align:center">Nadchodzące mecze:</h3>
+<h4 style="text-align:center">Nadchodzące mecze:</h4>
 @foreach (DateTime date in afterDateList)
 {
     <div style="max-width:682px;margin:auto">
         <div class="panel panel-primary" style="padding-bottom:0px;margin-bottom:0px;padding-top:0px;margin-top:0px">
             <div class="panel-heading">
-                <h3 class="panel-title" style="text-align:center">@date.Date.ToShortDateString()</h3>
+                <h4 class="panel-title" style="text-align:center">@date.Date.ToShortDateString()</h4>
             </div>
         </div>
         <ul style="list-style-type:none;margin:0px;padding:0px">            
@@ -417,13 +417,13 @@
     </div>
 }
 
-<h3 style="text-align:center">Rozegrane mecze:</h3>
+<h4 style="text-align:center">Rozegrane mecze:</h4>
 @foreach (DateTime date in beforeDateList)
 {
     <div style="max-width:682px;margin:auto">
         <div class="panel panel-primary" style="padding-bottom:0px;margin-bottom:0px;padding-top:0px;margin-top:0px">
             <div class="panel-heading">
-                <h3 class="panel-title" style="text-align:center">@date.Date.ToShortDateString()</h3>
+                <h4 class="panel-title" style="text-align:center">@date.Date.ToShortDateString()</h4>
             </div>
         </div>
         <ul style="list-style-type:none;margin:0px;padding:0px">

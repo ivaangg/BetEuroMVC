@@ -103,6 +103,9 @@ namespace BetEuro.Controllers
                 db.Users.Single(p => p.Id == user.Id).isActive = user.isActive;
                 db.Users.Single(p => p.Id == user.Id).Piwo = user.Piwo;
                 await db.SaveChangesAsync();
+
+                UpdateLeaderboard();
+
                 return RedirectToAction("Index");
             }
             ViewBag.Id = new SelectList(db.Leaderboards, "UserId", "UserId", user.Id);
@@ -139,6 +142,9 @@ namespace BetEuro.Controllers
             }
             db.Users.Remove(user);
             await db.SaveChangesAsync();
+
+            UpdateLeaderboard();
+
             return RedirectToAction("Index");
         }
 
@@ -149,6 +155,55 @@ namespace BetEuro.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void UpdateLeaderboard()
+        {
+            db.Database.ExecuteSqlCommand("TRUNCATE TABLE [Leaderboard]");
+            db.SaveChanges();
+
+            foreach (User u in db.Users.Where(p => p.isActive))
+            {
+                Leaderboard lb = new Leaderboard();
+                lb.User = u;
+                lb.UserId = u.Id;
+                lb.PlacedBets = 0;
+                lb.ResultHit = 0;
+                lb.ScoreHit = 0;
+                lb.Points = 0;
+
+                foreach (Bet b in u.Bets)
+                {
+                    Match m = db.Matches.Single(p => p.Id == b.MatchId);
+
+                    if (m.Score != null)
+                    {
+                        if (m.Score.HomeScore == b.HomeScore && m.Score.AwayScore == b.AwayScore)
+                        {
+                            //SCORE
+                            lb.ScoreHit++;
+                            lb.Points += m.Factor.Value * db.Points.Single(p => p.Id == "Score").Points;
+                        }
+                        else if (m.Score.Result == b.Result)
+                        {
+                            //RESULT
+                            lb.ResultHit++;
+                            lb.Points += m.Factor.Value * db.Points.Single(p => p.Id == "Result").Points;
+                        }
+                        else
+                        {
+                            // BET POINTS
+                            lb.PlacedBets++;
+                            lb.Points += m.Factor.Value * db.Points.Single(p => p.Id == "Bet").Points;
+                        }
+                    }
+
+                }
+
+                db.Leaderboards.Add(lb);
+            }
+
+            db.SaveChanges();
         }
 
         private async Task SendMail(string email, string subject, string body)

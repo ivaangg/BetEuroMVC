@@ -44,6 +44,12 @@
                         }
                     </li>
                     <li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @Html.ActionLink("Twoje wyniki", "UserBets", "Home", new { userName = User.Identity.Name },null)
+                        }
+                    </li>
+                    <li>
                         @Html.ActionLink("Zasady", "Rules", "Home")
                     </li>
                 </ul>
