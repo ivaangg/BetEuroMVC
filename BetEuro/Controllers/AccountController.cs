@@ -176,6 +176,7 @@ namespace BetEuro.Controllers
                 {
                     UserManager.AddToRole(user.Id, "User");
                     var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    code = System.Web.HttpUtility.UrlEncode(code);
                     var callbackUrl = Url.Action(
                         "ConfirmEmail",
                         "Account",
