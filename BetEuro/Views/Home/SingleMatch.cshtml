@@ -256,50 +256,50 @@
         $(document).ready(function () {
 
             $('#btnHomeMinus').click(function (e) {
-                var val = parseInt(document.getElementById("HomeScore").innerText);
+                var val = parseInt(document.getElementById("HomeScoreT").value);
 
                 if (val < 1) {
-                    document.getElementById("HomeScore").innerText = 0;
+                    document.getElementById("HomeScore").textContent = 0;
                     document.getElementById("HomeScoreT").value = 0;
                 }
                 else {
-                    document.getElementById("HomeScore").innerText = val - 1;
+                    document.getElementById("HomeScore").textContent = val - 1;
                     document.getElementById("HomeScoreT").value = val - 1;
                 }
             });
             $('#btnHomePlus').click(function (e) {
-                var val = parseInt(document.getElementById("HomeScore").innerText);
+                var val = parseInt(document.getElementById("HomeScoreT").value);
 
                 if (val < 0) {
-                    document.getElementById("HomeScore").innerText = 0;
+                    document.getElementById("HomeScore").textContent = 0;
                     document.getElementById("HomeScoreT").value = 0;
                 }
                 else {
-                    document.getElementById("HomeScore").innerText = val + 1;
+                    document.getElementById("HomeScore").textContent = val + 1;
                     document.getElementById("HomeScoreT").value = val + 1;
                 }
             });
             $('#btnAwayMinus').click(function (e) {
-                var val = parseInt(document.getElementById("AwayScore").innerText);
+                var val = parseInt(document.getElementById("AwayScoreT").value);
 
                 if (val < 1) {
-                    document.getElementById("AwayScore").innerText = 0;
+                    document.getElementById("AwayScore").textContent = 0;
                     document.getElementById("AwayScoreT").value = 0;
                 }
                 else {
-                    document.getElementById("AwayScore").innerText = val - 1;
+                    document.getElementById("AwayScore").textContent = val - 1;
                     document.getElementById("AwayScoreT").value = val - 1;
                 }
             });
             $('#btnAwayPlus').click(function (e) {
-                var val = parseInt(document.getElementById("AwayScore").innerText);
+                var val = parseInt(document.getElementById("AwayScoreT").value);
 
                 if (val < 0) {
-                    document.getElementById("AwayScore").innerText = 0;
+                    document.getElementById("AwayScore").textContent = 0;
                     document.getElementById("AwayScoreT").value = 0;
                 }
                 else {
-                    document.getElementById("AwayScore").innerText = val + 1;
+                    document.getElementById("AwayScore").textContent = val + 1;
                     document.getElementById("AwayScoreT").value = val + 1;
                 }
             });
