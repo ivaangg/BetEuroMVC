@@ -177,18 +177,20 @@ namespace BetEuro.Controllers
                     UserManager.AddToRole(user.Id, "User");
                     var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     code = System.Web.HttpUtility.UrlEncode(code);
-                    var callbackUrl = Url.Action(
-                        "ConfirmEmail",
-                        "Account",
-                        new { userId = user.Id, code = code },
-                        protocol: Request.Url.Scheme);
+                    var userId = System.Web.HttpUtility.UrlEncode(user.Id);
 
-                    
+                    //var callbackUrl = Url.Action(
+                    //    "ConfirmEmail",
+                    //    "Account",
+                    //    new { userId = user.Id, code = code },
+                    //    protocol: Request.Url.Scheme);
+
+                    var callbackUrl = @"http://beteuro.com.pl/Account/ConfirmEmail?userId=" + userId + "&code=" + code;
 
                     await UserManager.SendEmailAsync(
                         user.Id,
                         "Aktywuj swoje konto na beteuro.com.pl",
-                        "<a href=\"" + callbackUrl + "\">Kliknij tutaj, żeby aktywować konto.</a>" + Environment.NewLine + "Jeżeli powyższy link nie działa kliknij ten poniżej:" + Environment.NewLine + code);
+                        "Kliknij poniższy link, żeby aktywować konto:" + Environment.NewLine + callbackUrl + Environment.NewLine + "Jeżeli powyższy link nie działa zamień w nim wszystko co jest po code= na poniższy ciąg znaków." + Environment.NewLine + code);
 
                     ViewBag.Link = callbackUrl;
                     return View("DisplayEmail");
