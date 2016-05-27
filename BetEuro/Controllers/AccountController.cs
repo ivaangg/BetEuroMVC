@@ -188,7 +188,7 @@ namespace BetEuro.Controllers
                     await UserManager.SendEmailAsync(
                         user.Id,
                         "Aktywuj swoje konto na beteuro.com.pl",
-                        "<a href=\"" + callbackUrl + "\">Kliknij tutaj, żeby aktywować konto.</a>");
+                        "<a href=\"" + callbackUrl + "\">Kliknij tutaj, żeby aktywować konto.</a>" + Environment.NewLine + "Jeżeli powyższy link nie działa kliknij ten poniżej:" + Environment.NewLine + code);
 
                     ViewBag.Link = callbackUrl;
                     return View("DisplayEmail");
