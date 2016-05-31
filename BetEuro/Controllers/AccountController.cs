@@ -216,12 +216,15 @@ namespace BetEuro.Controllers
             if (result.Succeeded)
             {
                 var user = UserManager.FindById(userId);
-                var admin = UserManager.FindByEmail("ivaan84@gmail.com");
+                if (!user.isActive)
+                {
+                    var admin = UserManager.FindByEmail("ivaan84@gmail.com");
 
-                UserManager.SendEmail(admin.Id, "Nowy użytkownik",
-                        "Pojawił się nowy user w systemie:" + Environment.NewLine +
-                        "Username: " + user.UserName + Environment.NewLine +
-                        "Komentarz: " + user.Comment);
+                    UserManager.SendEmail(admin.Id, "Nowy użytkownik",
+                            "Pojawił się nowy user w systemie:" + Environment.NewLine +
+                            "Username: " + user.UserName + Environment.NewLine +
+                            "Komentarz: " + user.Comment);
+                }
 
             }
 
