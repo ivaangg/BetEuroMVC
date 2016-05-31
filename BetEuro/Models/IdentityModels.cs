@@ -20,6 +20,7 @@ namespace BetEuro.Models
         public bool Piwo { get; set; }
         public bool isActive { get; set; }
         public string Comment { get; set; }
+        public bool Paid { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
