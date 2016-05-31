@@ -5,8 +5,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h4 class="panel-title">Uwaga!</h4>
+    </div>
+    <div class="panel-body">
+        Tabela jest aktualizowana jednocześnie z aktualizacją wyników meczy. Jeżeli mecz nie ma aktualnego wyniku to tabela też nie będzie aktualna.
+    </div>
+</div>
+
 <div class="row" align="center">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <h4>Z piwem</h4>
         <table class="table table-striped table-hover ">
             <tr>
@@ -23,7 +32,7 @@
                     :)
                 </th>
                 <th>
-                    Punkty
+                    Pts
                 </th>
                 <th></th>
             </tr>
@@ -51,7 +60,7 @@
             }
         </table>       
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
         <h4>Wszyscy</h4>
         <table class="table table-striped table-hover ">
             <tr>
@@ -68,7 +77,7 @@
                     :)
                 </th>
                 <th>
-                    Punkty
+                    Pts
                 </th>
                 <th></th>
             </tr>
@@ -111,4 +120,6 @@
             <li><b>:)</b> - trafiony dokładny wynik</li>
         </ul>
     </div>
+</div>
+
 
