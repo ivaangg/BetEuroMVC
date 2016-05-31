@@ -39,6 +39,7 @@
           <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Paid" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Bet">
           <Key>
@@ -264,6 +265,7 @@
           <NavigationProperty Name="Leaderboard" Relationship="Self.FK_Leaderboard_AspNetUsers" FromRole="AspNetUsers" ToRole="Leaderboard" />
           <NavigationProperty Name="Bets" Relationship="Self.FK_UserInBet" FromRole="AspNetUsers" ToRole="Bet" />
           <NavigationProperty Name="AspNetRoles" Relationship="BEModel.AspNetUserRoles" FromRole="User" ToRole="AspNetRole" />
+          <Property Name="Paid" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Bet">
           <Key>
@@ -461,6 +463,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="BEModel.User">
               <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="Paid" ColumnName="Paid" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Piwo" ColumnName="Piwo" />
                 <ScalarProperty Name="isActive" ColumnName="isActive" />

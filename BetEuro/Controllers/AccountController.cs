@@ -169,7 +169,8 @@ namespace BetEuro.Controllers
 
                 user.Piwo = model.Piwo;
                 user.isActive = false;
-                user.Comment = model.Comment;                
+                user.Comment = model.Comment;
+                user.Paid = false;             
 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
