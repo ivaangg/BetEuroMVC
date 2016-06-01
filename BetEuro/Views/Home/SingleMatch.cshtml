@@ -172,8 +172,15 @@
                     foreach (Bet b in Model.Bets.Where(p => p.HomeScore == Model.Score.HomeScore && p.AwayScore == Model.Score.AwayScore))
                     {
                         <tr>
-                            <td align="center">
-                                <h5>@Html.ActionLink(@b.User.UserName, "UserBets", "Home", new { userName = @b.User.UserName }, null)</h5>
+                            <td align="center" width="65%">
+                                @if (b.User.Paid)
+                                {
+                                    <h5>@Html.ActionLink(@b.User.UserName, "UserBets", "Home", new { userName = @b.User.UserName }, null) @: (PIWO)</h5>
+                                }
+                                else
+                                {
+                                    <h5>@Html.ActionLink(@b.User.UserName, "UserBets", "Home", new { userName = @b.User.UserName }, null)</h5>
+                                }
                             </td>
                             <td align="center">
                                 <h5>@b.HomeScore - @b.AwayScore</h5>
@@ -197,8 +204,15 @@
                     foreach (Bet b in Model.Bets.Where(p => !(p.HomeScore == Model.Score.HomeScore && p.AwayScore == Model.Score.AwayScore) && p.Result == Model.Score.Result))
                     {
                         <tr>
-                            <td align="center">
-                                <h5>@Html.ActionLink(@b.User.UserName, "UserBets", "Home", new { userName = @b.User.UserName }, null)</h5>
+                            <td align="center" width="65%">
+                                @if (b.User.Paid)
+                                {
+                                    <h5>@Html.ActionLink(@b.User.UserName, "UserBets", "Home", new { userName = @b.User.UserName }, null) @: (PIWO)</h5>
+                                }
+                                else
+                                {
+                                    <h5>@Html.ActionLink(@b.User.UserName, "UserBets", "Home", new { userName = @b.User.UserName }, null)</h5>
+                                }
                             </td>
                             <td align="center">
                                 <h5>@b.HomeScore - @b.AwayScore</h5>
@@ -222,8 +236,15 @@
                     foreach (Bet b in Model.Bets.Where(p => !(p.HomeScore == Model.Score.HomeScore && p.AwayScore == Model.Score.AwayScore) && !(p.Result == Model.Score.Result)))
                     {
                         <tr>
-                            <td align="center">
-                                <h5>@Html.ActionLink(@b.User.UserName, "UserBets", "Home", new { userName = @b.User.UserName }, null)</h5>
+                            <td align="center" width="65%">
+                                @if (b.User.Paid)
+                                {
+                                    <h5>@Html.ActionLink(@b.User.UserName, "UserBets", "Home", new { userName = @b.User.UserName }, null) @: (PIWO)</h5>
+                                }
+                                else
+                                {
+                                    <h5>@Html.ActionLink(@b.User.UserName, "UserBets", "Home", new { userName = @b.User.UserName }, null)</h5>
+                                }
                             </td>
                             <td align="center">
                                 <h5>@b.HomeScore - @b.AwayScore</h5>
@@ -231,15 +252,15 @@
                             <td align="center">
                                 @if (Model.Factor == 1)
                                 {
-                                    <h5>1 punktów</h5>
+                                    <h5>1 punkt</h5>
                                 }
                                 else if (Model.Factor == 2)
                         {
-                                    <h5>2 punktów</h5>
+                                    <h5>2 punkty</h5>
                                 }
                         else
                         {
-                                    <h5>3 punktów</h5>
+                                    <h5>3 punkty</h5>
                                 }
                             </td>
                         </tr>

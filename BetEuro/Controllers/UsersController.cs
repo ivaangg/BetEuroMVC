@@ -85,7 +85,7 @@ namespace BetEuro.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Piwo,isActive,Comment,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] User user)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Piwo,Paid,isActive,Comment,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -102,6 +102,7 @@ namespace BetEuro.Controllers
                 }
                 db.Users.Single(p => p.Id == user.Id).isActive = user.isActive;
                 db.Users.Single(p => p.Id == user.Id).Piwo = user.Piwo;
+                db.Users.Single(p => p.Id == user.Id).Paid = user.Paid;
                 await db.SaveChangesAsync();
 
                 UpdateLeaderboard();

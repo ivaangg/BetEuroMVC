@@ -40,8 +40,15 @@
             @foreach (var item in Model.Where(p => p.User.Piwo).OrderByDescending(p => p.Points).ThenByDescending(p => p.ScoreHit).ThenByDescending(p => p.ResultHit).ThenByDescending(p => p.PlacedBets))
             {
                 <tr>
-                    <td>
-                        @Html.ActionLink(@item.User.UserName, "UserBets", "Home", new { userName = @item.User.UserName }, null)
+                    <td style="width:50%">
+                        @if (item.User.Paid)
+                        {
+                            @Html.ActionLink(@item.User.UserName, "UserBets", "Home", new { userName = @item.User.UserName }, null)
+                        }
+                        else
+                        {
+                            @Html.ActionLink(@item.User.UserName, "UserBets", "Home", new { userName = @item.User.UserName }, null) @: (PIWO nieaktywne)
+                        }
                     </td>
                     <td title="Obstawiony ale nie trafiony">
                         @item.PlacedBets
@@ -86,7 +93,7 @@
             @foreach (var item in Model.OrderByDescending(p => p.Points).ThenByDescending(p => p.ScoreHit).ThenByDescending(p => p.ResultHit).ThenByDescending(p => p.PlacedBets))
             {
                 <tr>
-                    <td>
+                    <td style="width:50%">
                         @Html.ActionLink(@item.User.UserName, "UserBets", "Home", new { userName = @item.User.UserName }, null)
                     </td>
                     <td title="Obstawiony ale nie trafiony">

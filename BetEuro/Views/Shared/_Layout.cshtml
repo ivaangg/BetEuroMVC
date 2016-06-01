@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using BetEuro.Models.Extensions
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -17,7 +19,23 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("BetEuro", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @{string txt = "BetEuro";}
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (!User.Identity.GetPiwoVal())
+                    {
+                        txt = "bez PIWA";
+                    }
+                    else if (User.Identity.GetPaidVal())
+                    {
+                        txt = "PIWO";
+                    }
+                    else
+                    {
+                        txt = "PIWO (nieaktywne)";
+                    }
+                }
+                @Html.ActionLink(txt, "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
                 
             </div>
             <div class="navbar-collapse collapse">
