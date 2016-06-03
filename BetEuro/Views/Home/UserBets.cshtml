@@ -6,6 +6,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
+
 @if (Model.Count() != 0)
 {
     if (User.Identity.Name == Model.First().User.UserName)
@@ -15,7 +17,8 @@
     else
     {
         <h4>Wyniki użytkownika: @Model.First().User.UserName</h4>
-    }
+    }   
+    
     <table class="table table-striped " style="margin:0px;padding:0px;table-layout: fixed;">
         <tr class="info">
             <th>Data</th>

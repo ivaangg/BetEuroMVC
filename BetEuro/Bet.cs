@@ -11,7 +11,7 @@ namespace BetEuro
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class Bet
     {
         public int Id { get; set; }
@@ -20,8 +20,100 @@ namespace BetEuro
         public int HomeScore { get; set; }
         public int AwayScore { get; set; }
         public int Result { get; set; }
-    
+
         public virtual User User { get; set; }
         public virtual Match Match { get; set; }
+
+        public int GetResultHit()
+        {
+            if (this.Match.Score != null)
+            {
+                if (Match.Score.Result != null)
+                {
+                    if (Match.Score.Result == this.Result)
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        public int GetScoreHit()
+        {
+            if (this.Match.Score != null)
+            {
+                if (Match.Score.Result != null)
+                {
+                    if (Match.Score.Result == this.Result)
+                    {
+                        if (Match.Score.HomeScore == this.HomeScore && Match.Score.AwayScore == this.AwayScore)
+                        {
+                            return 1;
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        public int GetPointsForThisMatch()
+        {
+            switch (this.GetResultHit())
+            {
+                case -1:
+                    {
+                        return 0;
+                    }
+                case 0:
+                    {
+                        return 1 * this.Match.Factor.Value;
+                    }
+                default:
+                    {
+                        switch (this.GetScoreHit())
+                        {
+                            case -1:
+                                {
+                                    return 0;
+                                }
+                            case 0:
+                                {
+                                    return 5 * this.Match.Factor.Value;
+                                }
+                            default:
+                                {
+                                    return 25 * this.Match.Factor.Value;
+                                }
+                        }
+                    }
+            }
+        }
     }
 }

@@ -141,5 +141,6 @@ namespace BetEuro.Controllers
                 return View("SingleMatch", db.Matches.Single(p => p.Id == matchId));
             }
         }
+
     }
 }
