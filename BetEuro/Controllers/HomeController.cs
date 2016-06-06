@@ -24,7 +24,7 @@ namespace BetEuro.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<ActionResult> Rules()
+        public ActionResult Rules()
         {
             return View();
         }

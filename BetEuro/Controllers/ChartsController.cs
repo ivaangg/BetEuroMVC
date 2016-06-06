@@ -72,9 +72,9 @@ namespace BetEuro.Controllers
 
 
 
-            Highcharts chart = new Highcharts("chart")
+            Highcharts chart = new Highcharts("chartUPoT")
                 .InitChart(new Chart { PlotBackgroundColor = null, PlotBorderWidth = null, PlotShadow = false })
-                .SetTitle(new Title { Text = "Rozkład punktów w zależności ich rodzaju" })
+                .SetTitle(new Title { Text = "Rozkład punktów w zależności od rodzaju trafienia" })
                 .SetTooltip(new Tooltip { PointFormat = "{series.name}: <b>{point.percentage:.0f}%</b>" })
                 .SetPlotOptions(new PlotOptions
                 {
@@ -105,5 +105,80 @@ namespace BetEuro.Controllers
             return View(chart);
         }
 
+        public ActionResult _UserBetsCount(string userName)
+        {
+            var bets = db.Bets.Where(p => p.User.UserName == userName && p.Match.Date < DateTime.Now);
+
+            int miss = 0;
+            int hit = 0;
+            int score = 0;
+
+            foreach (Bet b in bets)
+            {
+                if (b.Match.Score != null)
+                {
+                    int temp = b.GetPointsForThisMatch();
+                    switch (temp / b.Match.Factor.Value)
+                    {
+                        case 1:
+                            {
+                                miss += 1;
+                                break;
+                            }
+                        case 5:
+                            {
+                                hit += 1;
+                                break;
+                            }
+                        case 25:
+                            {
+                                score += 1;
+                                break;
+                            }
+                    }
+                }
+            }
+
+            string[] categories = new[] { "Nietrafione", "Rezultaty", "Wyniki" };
+            List<NumberAndName> data = new List<NumberAndName>();
+            data.Add(new NumberAndName(miss, categories[0]));
+            data.Add(new NumberAndName(hit, categories[1]));
+            data.Add(new NumberAndName(score, categories[2]));
+
+
+
+            Highcharts chart = new Highcharts("chartUBC")
+                .InitChart(new Chart { PlotBackgroundColor = null, PlotBorderWidth = null, PlotShadow = false })
+                .SetTitle(new Title { Text = "Rozkład trafionych typów ilościowo" })
+                .SetTooltip(new Tooltip { PointFormat = "{series.name}: <b>{point.percentage:.0f}%</b>" })
+                .SetPlotOptions(new PlotOptions
+                {
+                    Pie = new PlotOptionsPie
+                    {
+                        AllowPointSelect = true,
+                        Cursor = Cursors.Pointer,
+                        DataLabels = new PlotOptionsPieDataLabels
+                        {
+                            Enabled = true,
+                            Format = "<b>{point.name}</b>: {point.y:.0f}",
+                            Style = "color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'"
+                        }
+                    }
+                })
+                .SetSeries(new Series
+                {
+                    Type = ChartTypes.Pie,
+                    Name = "Rozkład typów",
+                    Data = new Data(new object[]
+                    {
+                                    new object[] { data[0].Name, data[0].Number },
+                                    new object[] { data[1].Name, data[1].Number },
+                                    new object[] { data[2].Name, data[2].Number }
+                    })
+                });
+
+            return View(chart);
+        }
+    
     }
 }

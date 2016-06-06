@@ -194,6 +194,7 @@
     <Compile Include="Controllers\MatchesController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\ScoresController.cs" />
+    <Compile Include="Controllers\StatsController.cs" />
     <Compile Include="Controllers\TeamsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -388,6 +389,9 @@
     <Content Include="Views\Home\Rules.cshtml" />
     <Content Include="Views\Home\UserBets.cshtml" />
     <Content Include="Views\Charts\_UserPointsOfType.cshtml" />
+    <Content Include="Views\Charts\_UserBetsCount.cshtml" />
+    <Content Include="Views\Stats\_YourPosition.cshtml" />
+    <Content Include="Views\Stats\_YourScore.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

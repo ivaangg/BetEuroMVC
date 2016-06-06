@@ -6,33 +6,62 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-
 @if (Model.Count() != 0)
 {
-    if (User.Identity.Name == Model.First().User.UserName)
-    {
-        <h4>@Model.First().User.UserName - twoje wyniki:</h4>
-    }
-    else
-    {
-        <h4>Wyniki użytkownika: @Model.First().User.UserName</h4>
-    }   
-    
+    <table class="table table-striped " style="margin:0px;padding:0px;table-layout: fixed;">
+        <tr>
+            @if (User.Identity.Name == @Model.First().User.UserName)
+            {
+
+                <td>
+                    @Model.First().User.UserName - twoje wyniki:
+                </td>
+
+            }
+            else
+            {
+
+                <td>
+                    Wyniki użytkownika: @Model.First().User.UserName
+                </td>
+            }
+            <td>
+                @Html.Action("_YourPosition", "Stats", new { userName = User.Identity.Name })
+            </td>
+            <td>
+                @Html.Action("_YourScore", "Stats", new { userName = User.Identity.Name })
+            </td>
+        </tr>
+    </table>
+    <div class="row">
+        <div class="col-sm-12">
+            <p>
+                @Html.Action("_UserPointsOfType", "Charts", new { userName = User.Identity.Name })
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <p>
+                @Html.Action("_UserBetsCount", "Charts", new { userName = User.Identity.Name })
+            </p>
+        </div>
+    </div>
+
     <table class="table table-striped " style="margin:0px;padding:0px;table-layout: fixed;">
         <tr class="info">
             <th>Data</th>
             <th>Drużyny</th>
             <th>Wynik</th>
             <th>Punkty</th>
-            <th>Typ</th>            
+            <th>Typ</th>
         </tr>
         @foreach (Bet b in Model)
-        {
+                {
             <tr class="info">
                 <td>@b.Match.Date.ToShortDateString()</td>
-                <td>@b.Match.HomeTeam.ShortName - @b.Match.AwayTeam.ShortName</td>  
-                              
+                <td>@b.Match.HomeTeam.ShortName - @b.Match.AwayTeam.ShortName</td>
+
                 @if (b.Match.Score != null)
                 {
                     <td>@b.Match.Score.HomeScore - @b.Match.Score.AwayScore</td>
@@ -138,15 +167,31 @@
                         }
                     }
                 }
-                <td>@b.HomeScore - @b.AwayScore</td>                
+                <td>@b.HomeScore - @b.AwayScore</td>
             </tr>
         }
     </table>
 }
 else
 {
-    <h4>Brak wyników - @Request.Params["userName"]</h4>
+    <table class="table table-striped " style="margin:0px;padding:0px;table-layout: fixed;">
+        <tr>
+            <td>
+                Brak wyników - @Request.Params["userName"]
+            </td>
+            <td>
+                @Html.Action("_YourPosition", "Stats", new { userName = User.Identity.Name })
+            </td>
+            <td>
+                @Html.Action("_YourScore", "Stats", new { userName = User.Identity.Name })
+            </td>
+        </tr>
+    </table>
 }
+
+
+
+
 
 
 

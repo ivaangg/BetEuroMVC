@@ -20,6 +20,9 @@
         <table class="table table-striped table-hover ">
             <tr>
                 <th>
+                    Poz
+                </th>
+                <th>
                     Login
                 </th>
                 <th title="Obstawiony ale nie trafiony">
@@ -40,6 +43,9 @@
             @foreach (var item in Model.Where(p => p.User.Piwo).OrderByDescending(p => p.Points).ThenByDescending(p => p.ScoreHit).ThenByDescending(p => p.ResultHit).ThenByDescending(p => p.PlacedBets))
             {
                 <tr>
+                    <td title="Pozycja">
+                        @item.GetPositionPiwo()
+                    </td>
                     <td style="width:50%">
                         @if (item.User.Paid)
                         {
@@ -72,6 +78,9 @@
         <table class="table table-striped table-hover ">
             <tr>
                 <th>
+                    Poz
+                </th>
+                <th>
                     Login
                 </th>
                 <th title="Obstawiony ale nie trafiony">
@@ -93,6 +102,9 @@
             @foreach (var item in Model.OrderByDescending(p => p.Points).ThenByDescending(p => p.ScoreHit).ThenByDescending(p => p.ResultHit).ThenByDescending(p => p.PlacedBets))
             {
                 <tr>
+                    <td title="Pozycja">
+                        @item.GetPositionAll()
+                    </td>
                     <td style="width:50%">
                         @Html.ActionLink(@item.User.UserName, "UserBets", "Home", new { userName = @item.User.UserName }, null)
                     </td>

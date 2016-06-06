@@ -11,9 +11,20 @@ namespace BetEuro
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Data;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Net;
+    using System.Web;
+    using System.Web.Mvc;
+    using BetEuro;
+
+
     public partial class Leaderboard
     {
+        private BEEntities db = new BEEntities();
+
         public string UserId { get; set; }
         public int Points { get; set; }
         public int ScoreHit { get; set; }
@@ -21,5 +32,73 @@ namespace BetEuro
         public int PlacedBets { get; set; }
     
         public virtual User User { get; set; }
+
+        public int GetPositionAll()
+        {
+            var all = db.Leaderboards.OrderByDescending(p => p.Points).ThenByDescending(p => p.ScoreHit).ThenByDescending(p => p.ResultHit).ThenByDescending(p => p.PlacedBets).ToArray();
+            int pos = 0;
+
+            for (int i = 0; i < all.Length - 1; i++)
+            {
+                if (all[i].UserId == this.UserId)
+                {
+                    pos = i;
+                    break;
+                }
+            }
+
+            int finalpos = pos + 1;
+
+            if (pos != 0)
+            {
+                for (int i = pos - 1; i >= 0; i--)
+                {
+                    if (this.Points == all[i].Points && this.ScoreHit == all[i].ScoreHit && this.ResultHit == all[i].ResultHit && this.PlacedBets == all[i].PlacedBets)
+                    {
+                        finalpos--;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            
+            return finalpos;
+        }
+
+        public int GetPositionPiwo()
+        {
+            var all = db.Leaderboards.Where(p => p.User.Piwo).OrderByDescending(p => p.Points).ThenByDescending(p => p.ScoreHit).ThenByDescending(p => p.ResultHit).ThenByDescending(p => p.PlacedBets).ToArray();
+            int pos = 0;
+
+            for (int i = 0; i < all.Length - 1; i++)
+            {
+                if (all[i].UserId == this.UserId)
+                {
+                    pos = i;
+                    break;
+                }
+            }
+
+            int finalpos = pos + 1;
+
+            if (pos != 0)
+            {
+                for (int i = pos - 1; i >= 0; i--)
+                {
+                    if (this.Points == all[i].Points && this.ScoreHit == all[i].ScoreHit && this.ResultHit == all[i].ResultHit && this.PlacedBets == all[i].PlacedBets)
+                    {
+                        finalpos--;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return finalpos;
+        }
     }
 }
