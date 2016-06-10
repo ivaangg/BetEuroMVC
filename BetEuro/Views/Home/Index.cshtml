@@ -15,6 +15,12 @@
     IEnumerable<Match> nowList = Model.Where(p => p.Date < now && p.Date.AddHours(2) > now).OrderByDescending(p => p.Date);
 }
 
+<div class="panel panel-danger">
+    <div class="panel-heading">
+        <h4 class="panel-title">Aktywacja opcji <b>PIWO</b> przedłużona do <b>17.06.2016</b>, po tej dacie w kontach nie spełniających warunków opcja ta zostanie wyłączona.</h4>
+    </div>
+</div>
+
 @if (nowList.Count() > 0)
 {
 <h4 style="text-align:center">Trwające mecze:</h4>
