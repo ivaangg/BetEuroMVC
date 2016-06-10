@@ -101,7 +101,6 @@ namespace BetEuro.Controllers
 
             return View(chart);
         }
-
         public ActionResult _UserBetsCount(string userName)
         {
             var bets = db.Bets.Where(p => p.User.UserName == userName && p.Match.Date < DateTime.Now);
@@ -176,7 +175,6 @@ namespace BetEuro.Controllers
 
             return View(chart);
         }
-
         public ActionResult _MatchScores(int matchId)
         {
             var bets = db.Bets.Where(d => d.MatchId == matchId);

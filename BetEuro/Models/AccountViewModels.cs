@@ -49,7 +49,7 @@ namespace BetEuro.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Nazwa użytkownika")]        
+        [Display(Name = "Nazwa użytkownika (LOGIN! NIE E-MAIL!)")]        
         public string Username { get; set; }
 
         [Required]
