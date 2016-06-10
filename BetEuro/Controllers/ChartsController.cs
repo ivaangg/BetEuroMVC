@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using DotNet.Highcharts;
 using DotNet.Highcharts.Options;
 using DotNet.Highcharts.Helpers;
-using System.Drawing;
-using System.Globalization;
 using DotNet.Highcharts.Enums;
 
 
@@ -179,6 +176,138 @@ namespace BetEuro.Controllers
 
             return View(chart);
         }
-    
+
+        public ActionResult _MatchScores(int matchId)
+        {
+            var bets = db.Bets.Where(d => d.MatchId == matchId);
+            List<string> scores = new List<string>();
+
+            foreach (var b in bets)
+            {
+                scores.Add(b.HomeScore.ToString() + " - " + b.AwayScore.ToString());
+            }
+
+
+
+            string[] categories = scores.Distinct().ToArray();
+            List<object[]> pts = new List<object[]>();
+
+            foreach (string c in categories)
+            {
+                pts.Add(new object[] { c, scores.Where(d => d == c).Count() });
+            }
+
+            List<DotNet.Highcharts.Options.Point> p = new List<DotNet.Highcharts.Options.Point>();
+
+            Highcharts chart = new Highcharts("chartMS")
+                .InitChart(new Chart { PlotBackgroundColor = null, PlotBorderWidth = null, PlotShadow = false })
+                .SetTooltip(new Tooltip { PointFormat = "{series.name}: <b>{point.percentage:.0f}%</b>" })
+                .SetTitle(new Title { Text="", Style = "display:'none'" })
+                .SetPlotOptions(new PlotOptions
+                {
+                    Pie = new PlotOptionsPie
+                    {
+                        AllowPointSelect = true,
+                        Cursor = Cursors.Pointer,
+                        DataLabels = new PlotOptionsPieDataLabels
+                        {
+                            Enabled = false,
+                            Format = "<b>{point.name}</b>",
+                            Style = "color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'"
+                        },
+                        ShowInLegend = true
+                    }
+                })
+                .SetSeries(new Series
+                {
+                    Type = ChartTypes.Pie,
+                    Name = "Procentowo",
+                    Data = new Data(pts.ToArray())
+                });
+
+            return View(chart);
+        }
+        public ActionResult _MatchOver(int matchId)
+        {
+            var bets = db.Bets.Where(d => d.MatchId == matchId);  
+            string[] categories = new string[] { "over 2.5", "under 2.5" };
+
+            List<DotNet.Highcharts.Options.Point> p = new List<DotNet.Highcharts.Options.Point>();
+
+            Highcharts chart = new Highcharts("chartOV")
+                .InitChart(new Chart { PlotBackgroundColor = null, PlotBorderWidth = null, PlotShadow = false })
+                .SetTooltip(new Tooltip { PointFormat = "{series.name}: <b>{point.percentage:.0f}%</b>" })
+                .SetTitle(new Title { Text = "", Style = "display:'none'" })
+                .SetPlotOptions(new PlotOptions
+                {
+                    Pie = new PlotOptionsPie
+                    {
+                        AllowPointSelect = true,
+                        Cursor = Cursors.Pointer,
+                        DataLabels = new PlotOptionsPieDataLabels
+                        {
+                            Enabled = false,
+                            Format = "<b>{point.name}</b>",
+                            Style = "color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'"
+                        },
+                        ShowInLegend = true
+                    }
+                })
+                .SetSeries(new Series
+                {
+                    Type = ChartTypes.Pie,
+                    Name = "Procentowo",
+                    Data = new Data(new object[]
+                    {
+                                    new object[] { categories[0], bets.Where(c => c.HomeScore + c.AwayScore > 2).Count() },
+                                    new object[] { categories[1], bets.Where(c => c.HomeScore + c.AwayScore < 3).Count() }
+                    })
+                });
+
+            return View(chart);
+        }
+        public ActionResult _MatchResult(int matchId)
+        {
+            var bets = db.Bets.Where(d => d.MatchId == matchId);
+
+            string homeName = db.Matches.Single(c => c.Id == matchId).HomeTeam.LongName;
+            string awayName = db.Matches.Single(c => c.Id == matchId).AwayTeam.LongName;
+
+            string[] categories = new string[] { homeName, "Remis", awayName };
+
+            Highcharts chart = new Highcharts("chartMR")
+                .InitChart(new Chart { PlotBackgroundColor = null, PlotBorderWidth = null, PlotShadow = false })
+                .SetTooltip(new Tooltip { PointFormat = "{series.name}: <b>{point.percentage:.0f}%</b>" })
+                .SetTitle(new Title { Text = "", Style = "display:'none'" })
+                .SetPlotOptions(new PlotOptions
+                {
+                    Pie = new PlotOptionsPie
+                    {
+                        AllowPointSelect = true,
+                        Cursor = Cursors.Pointer,
+                        DataLabels = new PlotOptionsPieDataLabels
+                        {
+                            Enabled = false,
+                            Format = "<b>{point.name}</b>",
+                            Style = "color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'"
+                        },
+                        ShowInLegend = true
+                    }
+                })
+                .SetSeries(new Series
+                {
+                    Type = ChartTypes.Pie,
+                    Name = "Procentowo",
+                    Data = new Data(new object[]
+                    {
+                                    new object[] { categories[0], bets.Where(c => c.Result == 1).Count() },
+                                    new object[] { categories[1], bets.Where(c => c.Result == 0).Count() },
+                                    new object[] { categories[2], bets.Where(c => c.Result == 2).Count() }
+                    })
+                });
+
+            return View(chart);
+        }
+
     }
 }

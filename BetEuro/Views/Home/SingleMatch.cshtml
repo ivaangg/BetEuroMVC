@@ -29,8 +29,7 @@
             else
             {
                 <tr class="info">
-                    <td colspan="3" style="text-align:center">        
-                    </td>
+                    <td colspan="3" style="text-align:center"></td>
                 </tr>
                 <tr></tr>
             }
@@ -58,17 +57,17 @@
             </tr>
             @if (Model.Bets.Any(p => p.User.UserName == userId))
             {
-                <tr style = "padding-bottom:5px" >
-                    <td colspan = "3" align = "center" ><h4>Twój typ:</h4></td>
-                </tr >
+                <tr style="padding-bottom:5px">
+                    <td colspan="3" align="center"><h4>Twój typ:</h4></td>
+                </tr>
             }
             else
             {
                 if (Model.Date > DateTime.Now)
                 {
-                    <tr style = "padding-bottom:5px" >
-                        <td colspan = "3" align = "center" ><h4>Brak Twojego typu, obstaw wynik:</h4></td >
-                    </tr >
+                    <tr style="padding-bottom:5px">
+                        <td colspan="3" align="center"><h4>Brak Twojego typu, obstaw wynik:</h4></td>
+                    </tr>
                 }
                 else
                 {
@@ -88,19 +87,19 @@
                             <label style="height:50px;width:50px;font-size:28px;margin:0px auto;padding:0px;vertical-align:middle" id="HomeScore">@homeScore</label>
                             @Html.TextBox("HomeScoreT", homeScore, new { @style = "display:none", @type = "number" })
                         </div>
-                        <div class="form-group"  style="margin:0px auto;padding:0px;">
+                        <div class="form-group" style="margin:0px auto;padding:0px;">
                             <input type="button" class="btn btn-primary" style="height:50px;width:50px;margin:0px auto;padding:0px" id="btnHomeMinus" value="-" />
                         </div>
                     </td>
-                <td width="20%" align="center" style="vertical-align:middle">
-                    <div class="form-group" style="margin:0px auto;padding:0px;">
-                        <input type="submit" value="Obstaw!" class="btn btn-info" style="height:50px;width:100px" />
-                        @if (ViewBag.Message != null)
-                {
-                            <p class="alert-danger">@ViewBag.Message</p>
-            }
-                    </div>                        
-                </td>
+                    <td width="20%" align="center" style="vertical-align:middle">
+                        <div class="form-group" style="margin:0px auto;padding:0px;">
+                            <input type="submit" value="Obstaw!" class="btn btn-info" style="height:50px;width:100px" />
+                            @if (ViewBag.Message != null)
+                            {
+                                <p class="alert-danger">@ViewBag.Message</p>
+                            }
+                        </div>
+                    </td>
                     <td width="40%" align="center" style="vertical-align:middle">
                         <div class="form-group" style="margin:0px auto;padding:0px;">
                             <input type="button" class="btn btn-primary" style="height:50px;width:50px;margin:0px auto;margin-bottom:8px;padding:0px" id="btnAwayPlus" value="+" />
@@ -119,37 +118,69 @@
             {
                 if (Model.Bets.Any(p => p.User.UserName == userId))
                 {
-                <tr style="padding-bottom:5px">
-                    <td width="40%" align="center">
-                        @Html.Label(homeScore.ToString(), new { @style = "width:50px;height:50px;font-size:30px;text-align:center", @type = "number" })
-                    </td>
-                    <td width="20%" align="center">
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                @if (ViewBag.Message != null)
-                                {
-                                    <h5 class="alert-danger" style="font-size: 18.2px">@ViewBag.Message</h5>
-                                }
-                                else
-                                {
-                                    <span style="width:50px;height:50px;font-size:30px;text-align:center">:</span>
-                                }
+                    <tr style="padding-bottom:5px">
+                        <td width="40%" align="center">
+                            @Html.Label(homeScore.ToString(), new { @style = "width:50px;height:50px;font-size:30px;text-align:center", @type = "number" })
+                        </td>
+                        <td width="20%" align="center">
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    @if (ViewBag.Message != null)
+                                    {
+                                        <h5 class="alert-danger" style="font-size: 18.2px">@ViewBag.Message</h5>
+                                    }
+                                    else
+                                    {
+                                        <span style="width:50px;height:50px;font-size:30px;text-align:center">:</span>
+                                    }
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                    <td width="40%" align="center">
-                        @Html.Label(awayScore.ToString(), new { @style = "width:50px;height:50px;font-size:30px;text-align:center", @type = "number" })
-                    </td>
-                </tr>
+                        </td>
+                        <td width="40%" align="center">
+                            @Html.Label(awayScore.ToString(), new { @style = "width:50px;height:50px;font-size:30px;text-align:center", @type = "number" })
+                        </td>
+                    </tr>
                 }
                 else
                 {
                     <tr></tr>
                 }
             }
-
+        </table>
+    </div>
+    if (Model.Date > DateTime.Now)
+    {
+        <div class="row">
+            <div class="col-sm-12">
+                <h4 style="text-align:center">Statystyki</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <p>
+                    @Html.Action("_MatchScores", "Charts", new { matchId = Model.Id })
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <p>
+                    @Html.Action("_MatchResult", "Charts", new { matchId = Model.Id })
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <p>
+                    @Html.Action("_MatchOver", "Charts", new { matchId = Model.Id })
+                </p>
+            </div>
+        </div>
+    }
+    <div style="max-width:682px;margin:auto">
+        <table class="table table-striped" style="table-layout:fixed;">
             @if (Model.Date < DateTime.Now)
-            {
+                {
                 <tr>
                     <td colspan="3" align="center"><h4>Wszystkie typy:</h4></td>
                 </tr>
@@ -159,7 +190,14 @@
                     {
                         <tr>
                             <td colspan="2" align="center">
-                                <h5>@b.User.UserName</h5>
+                                @if (b.User.Paid)
+                                {
+                                    <h5>@Html.ActionLink(@b.User.UserName, "UserBets", "Home", new { userName = @b.User.UserName }, null) (PIWO)</h5>
+                                }
+                                else
+                                {
+                                    <h5>@Html.ActionLink(@b.User.UserName, "UserBets", "Home", new { userName = @b.User.UserName }, null)</h5>
+                                }
                             </td>
                             <td align="center">
                                 <h5>@b.HomeScore - @b.AwayScore</h5>
@@ -174,7 +212,7 @@
                         <tr>
                             <td align="center" width="65%">
                                 @if (b.User.Paid)
-                                {
+                            {
                                     <h5>@Html.ActionLink(@b.User.UserName, "UserBets", "Home", new { userName = @b.User.UserName }, null) (PIWO)</h5>
                                 }
                                 else
@@ -187,15 +225,15 @@
                             </td>
                             <td align="center">
                                 @if (Model.Factor == 1)
-                                {
+                            {
                                     <h5>25 punktów</h5>
                                 }
                                 else if (Model.Factor == 2)
-                        {
+                                {
                                     <h5>50 punktów</h5>
                                 }
-                        else
-                        {
+                                else
+                                {
                                     <h5>75 punktów</h5>
                                 }
                             </td>
@@ -206,7 +244,7 @@
                         <tr>
                             <td align="center" width="65%">
                                 @if (b.User.Paid)
-                                {
+                            {
                                     <h5>@Html.ActionLink(@b.User.UserName, "UserBets", "Home", new { userName = @b.User.UserName }, null) (PIWO)</h5>
                                 }
                                 else
@@ -219,15 +257,15 @@
                             </td>
                             <td align="center">
                                 @if (Model.Factor == 1)
-                                {
+                            {
                                     <h5>5 punktów</h5>
                                 }
                                 else if (Model.Factor == 2)
-                        {
+                                {
                                     <h5>10 punktów</h5>
                                 }
-                        else
-                        {
+                                else
+                                {
                                     <h5>15 punktów</h5>
                                 }
                             </td>
@@ -238,7 +276,7 @@
                         <tr>
                             <td align="center" width="65%">
                                 @if (b.User.Paid)
-                                {
+                            {
                                     <h5>@Html.ActionLink(@b.User.UserName, "UserBets", "Home", new { userName = @b.User.UserName }, null) (PIWO)</h5>
                                 }
                                 else
@@ -251,24 +289,25 @@
                             </td>
                             <td align="center">
                                 @if (Model.Factor == 1)
-                                {
+                            {
                                     <h5>1 punkt</h5>
                                 }
                                 else if (Model.Factor == 2)
-                        {
+                                {
                                     <h5>2 punkty</h5>
                                 }
-                        else
-                        {
+                                else
+                                {
                                     <h5>3 punkty</h5>
                                 }
                             </td>
                         </tr>
+
                     }
                 }
             }
-            </table>
-            </div>
+        </table>
+    </div>
 
 }
 
