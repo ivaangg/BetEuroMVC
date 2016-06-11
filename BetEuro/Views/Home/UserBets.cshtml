@@ -12,7 +12,6 @@
         <tr>
             @if (User.Identity.Name == @Model.First().User.UserName)
             {
-
                 <td>
                     @Model.First().User.UserName - twoje wyniki:
                 </td>
@@ -26,24 +25,24 @@
                 </td>
             }
             <td>
-                @Html.Action("_YourPosition", "Stats", new { userName = User.Identity.Name })
+                @Html.Action("_YourPosition", "Stats", new { userName = Request.Params["userName"] })
             </td>
             <td>
-                @Html.Action("_YourScore", "Stats", new { userName = User.Identity.Name })
+                @Html.Action("_YourScore", "Stats", new { userName = Request.Params["userName"] })
             </td>
         </tr>
     </table>
     <div class="row">
         <div class="col-sm-12">
             <p>
-                @Html.Action("_UserPointsOfType", "Charts", new { userName = User.Identity.Name })
+                @Html.Action("_UserPointsOfType", "Charts", new { userName = Request.Params["userName"] })
             </p>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12">
             <p>
-                @Html.Action("_UserBetsCount", "Charts", new { userName = User.Identity.Name })
+                @Html.Action("_UserBetsCount", "Charts", new { userName = Request.Params["userName"] })
             </p>
         </div>
     </div>
@@ -180,10 +179,10 @@ else
                 Brak wyników - @Request.Params["userName"]
             </td>
             <td>
-                @Html.Action("_YourPosition", "Stats", new { userName = User.Identity.Name })
+                @Html.Action("_YourPosition", "Stats", new { userName = Request.Params["userName"] })
             </td>
             <td>
-                @Html.Action("_YourScore", "Stats", new { userName = User.Identity.Name })
+                @Html.Action("_YourScore", "Stats", new { userName = Request.Params["userName"] })
             </td>
         </tr>
     </table>

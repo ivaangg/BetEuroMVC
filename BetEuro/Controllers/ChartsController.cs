@@ -199,8 +199,8 @@ namespace BetEuro.Controllers
 
             Highcharts chart = new Highcharts("chartMS")
                 .InitChart(new Chart { PlotBackgroundColor = null, PlotBorderWidth = null, PlotShadow = false })
-                .SetTooltip(new Tooltip { PointFormat = "{series.name}: <b>{point.percentage:.0f}%</b>" })
-                .SetTitle(new Title { Text="", Style = "display:'none'" })
+                .SetTooltip(new Tooltip { PointFormat = "{series.name} : <b>{point.y:.0f}</b>" })
+                .SetTitle(new Title { Text="Obstawione wyniki"})
                 .SetPlotOptions(new PlotOptions
                 {
                     Pie = new PlotOptionsPie
@@ -219,7 +219,7 @@ namespace BetEuro.Controllers
                 .SetSeries(new Series
                 {
                     Type = ChartTypes.Pie,
-                    Name = "Procentowo",
+                    Name = "Ilość wystąpień",
                     Data = new Data(pts.ToArray())
                 });
 
@@ -234,8 +234,8 @@ namespace BetEuro.Controllers
 
             Highcharts chart = new Highcharts("chartOV")
                 .InitChart(new Chart { PlotBackgroundColor = null, PlotBorderWidth = null, PlotShadow = false })
-                .SetTooltip(new Tooltip { PointFormat = "{series.name}: <b>{point.percentage:.0f}%</b>" })
-                .SetTitle(new Title { Text = "", Style = "display:'none'" })
+                .SetTooltip(new Tooltip { PointFormat = "{series.name} : <b>{point.y:.0f}</b>" })
+                .SetTitle(new Title { Text = "Obstawione rezultaty" })
                 .SetPlotOptions(new PlotOptions
                 {
                     Pie = new PlotOptionsPie
@@ -254,7 +254,7 @@ namespace BetEuro.Controllers
                 .SetSeries(new Series
                 {
                     Type = ChartTypes.Pie,
-                    Name = "Procentowo",
+                    Name = "Ilość wystąpień",
                     Data = new Data(new object[]
                     {
                                     new object[] { categories[0], bets.Where(c => c.HomeScore + c.AwayScore > 2).Count() },
@@ -275,8 +275,8 @@ namespace BetEuro.Controllers
 
             Highcharts chart = new Highcharts("chartMR")
                 .InitChart(new Chart { PlotBackgroundColor = null, PlotBorderWidth = null, PlotShadow = false })
-                .SetTooltip(new Tooltip { PointFormat = "{series.name}: <b>{point.percentage:.0f}%</b>" })
-                .SetTitle(new Title { Text = "", Style = "display:'none'" })
+                .SetTooltip(new Tooltip { PointFormat = "{series.name} : <b>{point.y:.0f}</b>" })
+                .SetTitle(new Title { Text = "Powyżej/poniżej 2.5" })
                 .SetPlotOptions(new PlotOptions
                 {
                     Pie = new PlotOptionsPie
@@ -295,7 +295,7 @@ namespace BetEuro.Controllers
                 .SetSeries(new Series
                 {
                     Type = ChartTypes.Pie,
-                    Name = "Procentowo",
+                    Name = "Ilość wystąpień",
                     Data = new Data(new object[]
                     {
                                     new object[] { categories[0], bets.Where(c => c.Result == 1).Count() },

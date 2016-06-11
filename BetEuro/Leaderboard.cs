@@ -38,7 +38,7 @@ namespace BetEuro
             var all = db.Leaderboards.OrderByDescending(p => p.Points).ThenByDescending(p => p.ScoreHit).ThenByDescending(p => p.ResultHit).ThenByDescending(p => p.PlacedBets).ToArray();
             int pos = 0;
 
-            for (int i = 0; i < all.Length - 1; i++)
+            for (int i = 0; i < all.Length; i++)
             {
                 if (all[i].UserId == this.UserId)
                 {
@@ -72,7 +72,7 @@ namespace BetEuro
             var all = db.Leaderboards.Where(p => p.User.Piwo).OrderByDescending(p => p.Points).ThenByDescending(p => p.ScoreHit).ThenByDescending(p => p.ResultHit).ThenByDescending(p => p.PlacedBets).ToArray();
             int pos = 0;
 
-            for (int i = 0; i < all.Length - 1; i++)
+            for (int i = 0; i < all.Length; i++)
             {
                 if (all[i].UserId == this.UserId)
                 {
