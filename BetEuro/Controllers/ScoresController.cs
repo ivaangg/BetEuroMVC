@@ -18,7 +18,7 @@ namespace BetEuro.Controllers
         // GET: Scores
         public async Task<ActionResult> Index()
         {
-            var scores = db.Scores.Include(s => s.Match);
+            var scores = db.Scores.Include(s => s.Match).OrderByDescending(p => p.Match.Date);
             return View(await scores.ToListAsync());
         }
 
@@ -40,7 +40,7 @@ namespace BetEuro.Controllers
         // GET: Scores/Create
         public ActionResult Create()
         {
-            ViewBag.Id = new SelectList((from s in db.Matches.Where(p => p.Score == null).ToList() select new {Id = s.Id,FullName = s.HomeTeam.ShortName + "-" + s.AwayTeam.ShortName}),"Id","FullName",null);
+            ViewBag.Id = new SelectList((from s in db.Matches.Where(p => p.Score == null).OrderBy(d => d.Date).ToList() select new {Id = s.Id,FullName = s.HomeTeam.ShortName + "-" + s.AwayTeam.ShortName}),"Id","FullName",null);
             return View();
         }
 
