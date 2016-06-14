@@ -34,6 +34,9 @@
                 <th title="Trafiony wynik">
                     :)
                 </th>
+                <th title="Dodatkowe punkty za mecze z mnożnikiem.">
+                    x
+                </th>
                 <th>
                     Pts
                 </th>
@@ -42,6 +45,7 @@
 
             @foreach (var item in Model.Where(p => p.User.Piwo).OrderByDescending(p => p.Points).ThenByDescending(p => p.ScoreHit).ThenByDescending(p => p.ResultHit).ThenByDescending(p => p.PlacedBets))
             {
+                int factorPoints = item.Points - (item.ScoreHit * 25 + item.ResultHit * 5 + item.PlacedBets * 1);
                 <tr>
                     <td title="Pozycja">
                         @item.GetPositionPiwo()
@@ -65,8 +69,11 @@
                     <td title="Trafiony wynik">
                         @item.ScoreHit
                     </td>
+                    <td title="Dodatkowe punkty za mecze z mnożnikiem.">
+                        @factorPoints
+                    </td>
                     <td>
-                        @item.Points
+                        <b>@item.Points</b>
                     </td>
                     <td></td>
                 </tr>
@@ -92,6 +99,9 @@
                 <th title="Trafiony wynik">
                     :)
                 </th>
+                <th title="Dodatkowe punkty za mecze z mnożnikiem.">
+                    x
+                </th>
                 <th>
                     Pts
                 </th>
@@ -101,6 +111,7 @@
 
             @foreach (var item in Model.OrderByDescending(p => p.Points).ThenByDescending(p => p.ScoreHit).ThenByDescending(p => p.ResultHit).ThenByDescending(p => p.PlacedBets))
             {
+                int factorPoints = item.Points - (item.ScoreHit * 25 + item.ResultHit * 5 + item.PlacedBets * 1); 
                 <tr>
                     <td title="Pozycja">
                         @item.GetPositionAll()
@@ -117,8 +128,11 @@
                     <td title="Trafiony wynik">
                         @item.ScoreHit
                     </td>
+                    <td title="Dodatkowe punkty za mecze z mnożnikiem.">
+                        @factorPoints
+                    </td>
                     <td>
-                        @item.Points
+                        <b>@item.Points</b>
                     </td>
                     <td></td>
                 </tr>
@@ -136,7 +150,8 @@
         <ul>
             <li><b>-</b>  - nietrafiony typ </li>
             <li><b>+</b>  - trafiony rezultat</li>
-            <li><b>:)</b> - trafiony dokładny wynik</li>            
+            <li><b>:)</b> - trafiony dokładny wynik</li>     
+            <li><b>x</b> - dodatkowe punkty za mecze z mnożnikiem (Polska, półfinały, finał)</li>         
         </ul>
     </div>
 </div>

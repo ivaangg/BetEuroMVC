@@ -72,7 +72,7 @@ namespace BetEuro.Controllers
             Highcharts chart = new Highcharts("chartUPoT")
                 .InitChart(new Chart { PlotBackgroundColor = null, PlotBorderWidth = null, PlotShadow = false })
                 .SetTitle(new Title { Text = "Rozkład punktów w zależności od rodzaju trafienia" })
-                .SetTooltip(new Tooltip { PointFormat = "{series.name}: <b>{point.percentage:.0f}%</b>" })
+                .SetTooltip(new Tooltip { PointFormat = "{point.name}</b>: {point.y:.0f}" })
                 .SetPlotOptions(new PlotOptions
                 {
                     Pie = new PlotOptionsPie
@@ -81,10 +81,11 @@ namespace BetEuro.Controllers
                         Cursor = Cursors.Pointer,
                         DataLabels = new PlotOptionsPieDataLabels
                         {
-                            Enabled = true,
+                            Enabled = false,
                             Format = "<b>{point.name}</b>: {point.y:.0f}",
                             Style = "color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'"
-                        }
+                        },
+                        ShowInLegend = true                        
                     }
                 })
                 .SetSeries(new Series
@@ -146,7 +147,7 @@ namespace BetEuro.Controllers
             Highcharts chart = new Highcharts("chartUBC")
                 .InitChart(new Chart { PlotBackgroundColor = null, PlotBorderWidth = null, PlotShadow = false })
                 .SetTitle(new Title { Text = "Rozkład trafionych typów ilościowo" })
-                .SetTooltip(new Tooltip { PointFormat = "{series.name}: <b>{point.percentage:.0f}%</b>" })
+                .SetTooltip(new Tooltip { PointFormat = "<b>{point.name}</b>: {point.y:.0f}" })
                 .SetPlotOptions(new PlotOptions
                 {
                     Pie = new PlotOptionsPie
@@ -155,10 +156,11 @@ namespace BetEuro.Controllers
                         Cursor = Cursors.Pointer,
                         DataLabels = new PlotOptionsPieDataLabels
                         {
-                            Enabled = true,
+                            Enabled = false,
                             Format = "<b>{point.name}</b>: {point.y:.0f}",
                             Style = "color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'"
-                        }
+                        },
+                        ShowInLegend = true
                     }
                 })
                 .SetSeries(new Series
@@ -235,7 +237,7 @@ namespace BetEuro.Controllers
             Highcharts chart = new Highcharts("chartOV")
                 .InitChart(new Chart { PlotBackgroundColor = null, PlotBorderWidth = null, PlotShadow = false })
                 .SetTooltip(new Tooltip { PointFormat = "{series.name} : <b>{point.y:.0f}</b>" })
-                .SetTitle(new Title { Text = "Obstawione rezultaty" })
+                .SetTitle(new Title { Text = "Powyżej/poniżej 2.5" })
                 .SetPlotOptions(new PlotOptions
                 {
                     Pie = new PlotOptionsPie
@@ -276,7 +278,7 @@ namespace BetEuro.Controllers
             Highcharts chart = new Highcharts("chartMR")
                 .InitChart(new Chart { PlotBackgroundColor = null, PlotBorderWidth = null, PlotShadow = false })
                 .SetTooltip(new Tooltip { PointFormat = "{series.name} : <b>{point.y:.0f}</b>" })
-                .SetTitle(new Title { Text = "Powyżej/poniżej 2.5" })
+                .SetTitle(new Title { Text = "Obstawione rezultaty" })
                 .SetPlotOptions(new PlotOptions
                 {
                     Pie = new PlotOptionsPie
