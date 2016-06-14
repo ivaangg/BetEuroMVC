@@ -72,7 +72,7 @@ namespace BetEuro.Controllers
             Highcharts chart = new Highcharts("chartUPoT")
                 .InitChart(new Chart { PlotBackgroundColor = null, PlotBorderWidth = null, PlotShadow = false })
                 .SetTitle(new Title { Text = "Rozkład punktów w zależności od rodzaju trafienia" })
-                .SetTooltip(new Tooltip { PointFormat = "{point.name}</b>: {point.y:.0f}" })
+                .SetTooltip(new Tooltip { PointFormat = "<b>{point.name}</b>: {point.y:.0f} pts" })
                 .SetPlotOptions(new PlotOptions
                 {
                     Pie = new PlotOptionsPie
@@ -147,7 +147,7 @@ namespace BetEuro.Controllers
             Highcharts chart = new Highcharts("chartUBC")
                 .InitChart(new Chart { PlotBackgroundColor = null, PlotBorderWidth = null, PlotShadow = false })
                 .SetTitle(new Title { Text = "Rozkład trafionych typów ilościowo" })
-                .SetTooltip(new Tooltip { PointFormat = "<b>{point.name}</b>: {point.y:.0f}" })
+                .SetTooltip(new Tooltip { PointFormat = "<b>{point.name}</b>: {point.y:.0f} razy" })
                 .SetPlotOptions(new PlotOptions
                 {
                     Pie = new PlotOptionsPie
