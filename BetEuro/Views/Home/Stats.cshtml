@@ -1,0 +1,250 @@
+﻿@model IEnumerable<BetEuro.Bet>
+
+@{
+    ViewBag.Title = "Stats";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{ 
+    var orderedByMaxHits = Model.Where(i => i.Result == i.Match.Score.Result
+                                                && i.HomeScore == i.Match.Score.HomeScore
+                                                && i.AwayScore == i.Match.Score.AwayScore)
+                           .GroupBy(i => i.MatchId)
+                           .Select(i => new { Count = i.Count(), Name = i.First().Match.HomeTeam.LongName + " - " + i.First().Match.AwayTeam.LongName, ID = i.First().MatchId }).OrderByDescending(i => i.Count).ToList();
+    var orderedByMaxResults = Model.Where(i => i.Result == i.Match.Score.Result
+                                            && (i.HomeScore != i.Match.Score.HomeScore
+                                            || i.AwayScore != i.Match.Score.AwayScore))
+                       .GroupBy(i => i.MatchId)
+                       .Select(i => new { Count = i.Count(), Name = i.First().Match.HomeTeam.LongName + " - " + i.First().Match.AwayTeam.LongName, ID = i.First().MatchId }).OrderByDescending(i => i.Count).ToList();
+    var orderedByMaxMisses = Model.Where(i => i.Result != i.Match.Score.Result)
+                       .GroupBy(i => i.MatchId)
+                       .Select(i => new { Count = i.Count(), Name = i.First().Match.HomeTeam.LongName + " - " + i.First().Match.AwayTeam.LongName, ID = i.First().MatchId }).OrderByDescending(i => i.Count).ToList();
+
+    var orderedByMaxPoints = Model.GroupBy(i => i.MatchId)
+                            .Select(
+                  i => new {
+                      Points =
+                      (i.Where(i1 => i1.Result == i1.Match.Score.Result && i1.HomeScore == i1.Match.Score.HomeScore && i1.AwayScore == i1.Match.Score.AwayScore).Count() * 25 +
+                      i.Where(i1 => i1.Result == i1.Match.Score.Result && (i1.HomeScore != i1.Match.Score.HomeScore || i1.AwayScore != i1.Match.Score.AwayScore)).Count() * 5 +
+                      i.Where(i1 => i1.Result != i1.Match.Score.Result).Count() * 1) * i.First().Match.Factor,
+                      Name = i.First().Match.HomeTeam.LongName + " - " + i.First().Match.AwayTeam.LongName,
+                      ID = i.First().MatchId
+                  }
+                  ).OrderByDescending(i => i.Points).ToList();
+
+    var orderedByPercentHit = Model.GroupBy(i => i.UserId)
+                           .Select(i =>
+                           new
+                           {
+                               Percent = (int)(i.Where(j => j.Result == j.Match.Score.Result && j.HomeScore == j.Match.Score.HomeScore && j.AwayScore == j.Match.Score.AwayScore).Count() * 100 / i.Count()),
+                               Name = i.First().User.UserName,
+                               ID = i.First().UserId
+                           }
+                           ).OrderByDescending(i => i.Percent).ToList();
+    var orderedByPercentResult = Model.GroupBy(i => i.UserId)
+               .Select(i =>
+               new
+               {
+                   Percent = (int)(i.Where(j => j.Result == j.Match.Score.Result && (j.HomeScore != j.Match.Score.HomeScore || j.AwayScore != j.Match.Score.AwayScore)).Count() * 100 / i.Count()),
+                   Name = i.First().User.UserName,
+                   ID = i.First().UserId
+               }
+               ).OrderByDescending(i => i.Percent).ToList();
+    var orderedByPercentMiss = Model.GroupBy(i => i.UserId)
+               .Select(i =>
+               new
+               {
+                   Percent = (int)(i.Where(j => j.Result != j.Match.Score.Result).Count() * 100 / i.Count()),
+                   Name = i.First().User.UserName,
+                   ID = i.First().UserId
+               }
+               ).OrderBy(i => i.Percent).ToList();
+
+}
+
+<div class="col-md-4">
+    <table class="table table-striped " style="width:300px">
+        <tr class="info" style="text-align:center">
+            <th colspan="2" style="text-align:center">UŻYTKOWNICY - STATYSTYKI</th>
+        </tr>
+        <tr class="success" style="text-align:center">
+            <td colspan="2">Procent trafień wyników</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentHit[0].Name, "UserBets", "Home", new { userName = @orderedByPercentHit[0].Name }, null)</td>
+            <td>@orderedByPercentHit[0].Percent %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentHit[1].Name, "UserBets", "Home", new { userName = @orderedByPercentHit[1].Name }, null)</td>
+            <td>@orderedByPercentHit[1].Percent %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentHit[2].Name, "UserBets", "Home", new { userName = @orderedByPercentHit[2].Name }, null)</td>
+            <td>@orderedByPercentHit[2].Percent %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentHit[3].Name, "UserBets", "Home", new { userName = @orderedByPercentHit[3].Name }, null)</td>
+            <td>@orderedByPercentHit[3].Percent %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentHit[4].Name, "UserBets", "Home", new { userName = @orderedByPercentHit[4].Name }, null)</td>
+            <td>@orderedByPercentHit[4].Percent %</td>
+        </tr>
+        <tr class="success" style="text-align:center">
+            <td colspan="2">Procent trafień rezultatów</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentResult[0].Name, "UserBets", "Home", new { userName = @orderedByPercentResult[0].Name }, null)</td>
+            <td>@orderedByPercentResult[0].Percent %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentResult[1].Name, "UserBets", "Home", new { userName = @orderedByPercentResult[1].Name }, null)</td>
+            <td>@orderedByPercentResult[1].Percent %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentResult[2].Name, "UserBets", "Home", new { userName = @orderedByPercentResult[2].Name }, null)</td>
+            <td>@orderedByPercentResult[2].Percent %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentResult[3].Name, "UserBets", "Home", new { userName = @orderedByPercentResult[3].Name }, null)</td>
+            <td>@orderedByPercentResult[3].Percent %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentResult[4].Name, "UserBets", "Home", new { userName = @orderedByPercentResult[4].Name }, null)</td>
+            <td>@orderedByPercentResult[4].Percent %</td>
+        </tr>
+        <tr class="success" style="text-align:center">
+            <td colspan="2">Procent nietrafień</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentMiss[0].Name, "UserBets", "Home", new { userName = @orderedByPercentMiss[0].Name }, null)</td>
+            <td>@orderedByPercentMiss[0].Percent %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentMiss[1].Name, "UserBets", "Home", new { userName = @orderedByPercentMiss[1].Name }, null)</td>
+            <td>@orderedByPercentMiss[1].Percent %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentMiss[2].Name, "UserBets", "Home", new { userName = @orderedByPercentMiss[2].Name }, null)</td>
+            <td>@orderedByPercentMiss[2].Percent %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentMiss[3].Name, "UserBets", "Home", new { userName = @orderedByPercentMiss[3].Name }, null)</td>
+            <td>@orderedByPercentMiss[3].Percent %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentMiss[4].Name, "UserBets", "Home", new { userName = @orderedByPercentMiss[4].Name }, null)</td>
+            <td>@orderedByPercentMiss[4].Percent %</td>
+        </tr>
+    </table>
+</div>
+
+<div class="col-md-4">
+    <table class="table table-striped " style="width:300px">
+        <tr class="info" style="text-align:center">
+            <th colspan="2" style="text-align:center">MECZE - STATYSTYKI</th>
+        </tr>
+        <tr class="success" style="text-align:center">
+            <td colspan="2">Najwięcej punktów</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxPoints[0].ID})">@orderedByMaxPoints[0].Name</a></td>
+            <td>@orderedByMaxPoints[0].Points</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxPoints[1].ID})">@orderedByMaxPoints[1].Name</a></td>
+            <td>@orderedByMaxPoints[1].Points</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxPoints[2].ID})">@orderedByMaxPoints[2].Name</a></td>
+            <td>@orderedByMaxPoints[2].Points</td>
+        </tr>
+        <tr class="success" style="text-align:center">
+            <td colspan="2">Najmniej punktów</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxPoints[orderedByMaxPoints.Count - 1].ID})">@orderedByMaxPoints[orderedByMaxPoints.Count - 1].Name</a></td>
+            <td>@orderedByMaxPoints[orderedByMaxPoints.Count - 1].Points</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxPoints[orderedByMaxPoints.Count - 2].ID})">@orderedByMaxPoints[orderedByMaxPoints.Count - 2].Name</a></td>
+            <td>@orderedByMaxPoints[orderedByMaxPoints.Count - 2].Points</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxPoints[orderedByMaxPoints.Count - 3].ID})">@orderedByMaxPoints[orderedByMaxPoints.Count - 3].Name</a></td>
+            <td>@orderedByMaxPoints[orderedByMaxPoints.Count - 3].Points</td>
+        </tr>
+        <tr class="success" style="text-align:center">
+            <td colspan="2">Trafione wyniki</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxHits[0].ID})">@orderedByMaxHits[0].Name</a></td>
+            <td>@orderedByMaxHits[0].Count</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxHits[1].ID})">@orderedByMaxHits[1].Name</a></td>
+            <td>@orderedByMaxHits[1].Count</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxHits[2].ID})">@orderedByMaxHits[2].Name</a></td>
+            <td>@orderedByMaxHits[2].Count</td>
+        </tr>
+        <tr class="success" style="text-align:center">
+            <td colspan="2">Trafione rezultaty</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxResults[0].ID})">@orderedByMaxResults[0].Name</a></td>
+            <td>@orderedByMaxResults[0].Count</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxResults[1].ID})">@orderedByMaxResults[1].Name</a></td>
+            <td>@orderedByMaxResults[1].Count</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxResults[2].ID})">@orderedByMaxResults[2].Name</a></td>
+            <td>@orderedByMaxResults[2].Count</td>
+        </tr>
+        <tr class="success" style="text-align:center">
+            <td colspan="2">Nietrafione</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxMisses[0].ID})">@orderedByMaxMisses[0].Name</a></td>
+            <td>@orderedByMaxMisses[0].Count</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxMisses[1].ID})">@orderedByMaxMisses[1].Name</a></td>
+            <td>@orderedByMaxMisses[1].Count</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxMisses[2].ID})">@orderedByMaxMisses[2].Name</a></td>
+            <td>@orderedByMaxMisses[2].Count</td>
+        </tr>
+    </table>
+
+</div>
+
+<div class="col-md-4">
+    <table class="table table-striped " style="width:300px">
+        <tr class="info" style="text-align:center">
+            <th colspan="2" style="text-align:center">MECZE - STATYSTYKI</th>
+        </tr>
+        <tr class="success" style="text-align:center">
+            <td colspan="2">Najwięcej punktów</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxPoints[0].ID})">@orderedByMaxPoints[0].Name</a></td>
+            <td>@orderedByMaxPoints[0].Points</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxPoints[1].ID})">@orderedByMaxPoints[1].Name</a></td>
+            <td>@orderedByMaxPoints[1].Points</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxPoints[2].ID})">@orderedByMaxPoints[2].Name</a></td>
+            <td>@orderedByMaxPoints[2].Points</td>
+        </tr>
+    </table>
+
+</div>
+
+

@@ -395,6 +395,7 @@
     <Content Include="Views\Charts\_MatchScores.cshtml" />
     <Content Include="Views\Charts\_MatchResult.cshtml" />
     <Content Include="Views\Charts\_MatchOver.cshtml" />
+    <Content Include="Views\Home\Stats.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

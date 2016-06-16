@@ -47,6 +47,12 @@ namespace BetEuro.Controllers
             return View(await points.ToListAsync());
         }
 
+        public async Task<ActionResult> Stats()
+        {
+            var bets = db.Bets.Where(p => p.Match.Date < DateTime.Now && p.Match.Score != null);
+            return View(await bets.ToListAsync());
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
