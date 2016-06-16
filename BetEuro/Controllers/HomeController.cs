@@ -77,7 +77,7 @@ namespace BetEuro.Controllers
         public async Task<ActionResult> BetThisMatch(FormCollection form)
         {
             Bet bet;
-
+            
             int matchId = 0;
             int homeScore = 0;
             int awayScore = 0;
