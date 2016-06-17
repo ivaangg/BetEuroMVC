@@ -35,7 +35,7 @@ namespace BetEuro
                         regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
                 }
                 //,
-                //CookieName = "MyCookie",
+                //CookieName = ".AspNet.Cookies",
                 //CookieDomain = ".beteuro.com.pl",
                 //CookieHttpOnly = true,
                 //CookieSecure = CookieSecureOption.Always,
