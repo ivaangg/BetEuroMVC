@@ -59,17 +59,23 @@
                     <li>
                         @if (User.Identity.IsAuthenticated)
                         {
+                            @Html.ActionLink("Stats", "Stats", "Home", new { userName = User.Identity.Name }, null)
+                        }
+                    </li>
+                    <li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
                             @Html.ActionLink("Mecze", "Matches", "Home")
                         }
                     </li>
                     <li>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            @Html.ActionLink("Twoje wyniki", "UserBets", "Home", new { userName = User.Identity.Name },null)
+                            @Html.ActionLink("Wyniki", "UserBets", "Home", new { userName = User.Identity.Name },null)
                         }
                     </li>
                     <li>
-                        @Html.ActionLink("Zasady", "Rules", "Home")
+                        @Html.ActionLink("?", "Rules", "Home")
                     </li>
                 </ul>
                 @Html.Partial("_LoginPartial")

@@ -6,41 +6,16 @@
 }
 
 @{ 
-    var orderedByMaxHits = Model.Where(i => i.Result == i.Match.Score.Result
-                                                && i.HomeScore == i.Match.Score.HomeScore
-                                                && i.AwayScore == i.Match.Score.AwayScore)
-                           .GroupBy(i => i.MatchId)
-                           .Select(i => new { Count = i.Count(), Name = i.First().Match.HomeTeam.LongName + " - " + i.First().Match.AwayTeam.LongName, ID = i.First().MatchId }).OrderByDescending(i => i.Count).ToList();
-    var orderedByMaxResults = Model.Where(i => i.Result == i.Match.Score.Result
-                                            && (i.HomeScore != i.Match.Score.HomeScore
-                                            || i.AwayScore != i.Match.Score.AwayScore))
-                       .GroupBy(i => i.MatchId)
-                       .Select(i => new { Count = i.Count(), Name = i.First().Match.HomeTeam.LongName + " - " + i.First().Match.AwayTeam.LongName, ID = i.First().MatchId }).OrderByDescending(i => i.Count).ToList();
-    var orderedByMaxMisses = Model.Where(i => i.Result != i.Match.Score.Result)
-                       .GroupBy(i => i.MatchId)
-                       .Select(i => new { Count = i.Count(), Name = i.First().Match.HomeTeam.LongName + " - " + i.First().Match.AwayTeam.LongName, ID = i.First().MatchId }).OrderByDescending(i => i.Count).ToList();
-
-    var orderedByMaxPoints = Model.GroupBy(i => i.MatchId)
-                            .Select(
-                  i => new {
-                      Points =
-                      (i.Where(i1 => i1.Result == i1.Match.Score.Result && i1.HomeScore == i1.Match.Score.HomeScore && i1.AwayScore == i1.Match.Score.AwayScore).Count() * 25 +
-                      i.Where(i1 => i1.Result == i1.Match.Score.Result && (i1.HomeScore != i1.Match.Score.HomeScore || i1.AwayScore != i1.Match.Score.AwayScore)).Count() * 5 +
-                      i.Where(i1 => i1.Result != i1.Match.Score.Result).Count() * 1) * i.First().Match.Factor,
-                      Name = i.First().Match.HomeTeam.LongName + " - " + i.First().Match.AwayTeam.LongName,
-                      ID = i.First().MatchId
-                  }
-                  ).OrderByDescending(i => i.Points).ToList();
-
+    #region USER
     var orderedByPercentHit = Model.GroupBy(i => i.UserId)
-                           .Select(i =>
-                           new
-                           {
-                               Percent = (int)(i.Where(j => j.Result == j.Match.Score.Result && j.HomeScore == j.Match.Score.HomeScore && j.AwayScore == j.Match.Score.AwayScore).Count() * 100 / i.Count()),
-                               Name = i.First().User.UserName,
-                               ID = i.First().UserId
-                           }
-                           ).OrderByDescending(i => i.Percent).ToList();
+                          .Select(i =>
+                          new
+                          {
+                              Percent = (int)(i.Where(j => j.Result == j.Match.Score.Result && j.HomeScore == j.Match.Score.HomeScore && j.AwayScore == j.Match.Score.AwayScore).Count() * 100 / i.Count()),
+                              Name = i.First().User.UserName,
+                              ID = i.First().UserId
+                          }
+                          ).OrderByDescending(i => i.Percent).ToList();
     var orderedByPercentResult = Model.GroupBy(i => i.UserId)
                .Select(i =>
                new
@@ -58,8 +33,89 @@
                    Name = i.First().User.UserName,
                    ID = i.First().UserId
                }
-               ).OrderBy(i => i.Percent).ToList();
+               ).OrderByDescending(i => i.Percent).ToList();
+    #endregion
 
+    #region MATCH
+    var orderedByMaxHits = Model.Where(i => i.Result == i.Match.Score.Result
+                        && i.HomeScore == i.Match.Score.HomeScore
+                        && i.AwayScore == i.Match.Score.AwayScore)
+   .GroupBy(i => i.MatchId)
+   .Select(i => new { Count = i.Count(), Name = i.First().Match.HomeTeam.LongName + " - " + i.First().Match.AwayTeam.LongName, ID = i.First().MatchId }).OrderByDescending(i => i.Count).ToList();
+    var orderedByMaxResults = Model.Where(i => i.Result == i.Match.Score.Result
+                                            && (i.HomeScore != i.Match.Score.HomeScore
+                                            || i.AwayScore != i.Match.Score.AwayScore))
+                       .GroupBy(i => i.MatchId)
+                       .Select(i => new { Count = i.Count(), Name = i.First().Match.HomeTeam.LongName + " - " + i.First().Match.AwayTeam.LongName, ID = i.First().MatchId }).OrderByDescending(i => i.Count).ToList();
+    var orderedByMaxMisses = Model.Where(i => i.Result != i.Match.Score.Result)
+                       .GroupBy(i => i.MatchId)
+                       .Select(i => new { Count = i.Count(), Name = i.First().Match.HomeTeam.LongName + " - " + i.First().Match.AwayTeam.LongName, ID = i.First().MatchId }).OrderBy(i => i.Count).ToList();
+
+    var orderedByMaxPoints = Model.GroupBy(i => i.MatchId)
+                            .Select(
+                  i => new
+                  {
+                      Points =
+                      (i.Where(i1 => i1.Result == i1.Match.Score.Result && i1.HomeScore == i1.Match.Score.HomeScore && i1.AwayScore == i1.Match.Score.AwayScore).Count() * 25 +
+                      i.Where(i1 => i1.Result == i1.Match.Score.Result && (i1.HomeScore != i1.Match.Score.HomeScore || i1.AwayScore != i1.Match.Score.AwayScore)).Count() * 5 +
+                      i.Where(i1 => i1.Result != i1.Match.Score.Result).Count() * 1) * i.First().Match.Factor,
+                      Name = i.First().Match.HomeTeam.LongName + " - " + i.First().Match.AwayTeam.LongName,
+                      ID = i.First().MatchId
+                  }
+                  ).OrderByDescending(i => i.Points).ToList();
+    #endregion
+
+    #region BET
+    int countOfHits = Model.Where(i => i.Result == i.Match.Score.Result
+                                && i.HomeScore == i.Match.Score.HomeScore
+                                && i.AwayScore == i.Match.Score.AwayScore).Count();
+
+    int countOfResults = Model.Where(i => i.Result == i.Match.Score.Result
+                                            && (i.HomeScore != i.Match.Score.HomeScore
+                                            || i.AwayScore != i.Match.Score.AwayScore)).Count();
+
+    int countOfMisses = Model.Where(i => i.Result != i.Match.Score.Result).Count();
+
+    int over25 = Model.Where(i => i.HomeScore + i.AwayScore > 2).Count();
+
+    int under25 = Model.Where(i => i.HomeScore + i.AwayScore < 3).Count();
+
+    var mostPopularBets = Model.Select(g => new
+    {
+        Count = Model.Where(i => (i.HomeScore + i.AwayScore == g.AwayScore + g.HomeScore) && (i.HomeScore == g.HomeScore || i.AwayScore == g.HomeScore)).Count(),
+        String = g.AwayScore == g.HomeScore ? g.HomeScore.ToString() + " - " + g.AwayScore.ToString() : g.HomeScore > g.AwayScore ? g.HomeScore.ToString() + " - " + g.AwayScore.ToString() : g.AwayScore.ToString() + " - " + g.HomeScore.ToString()
+    }).Distinct().OrderByDescending(c => c.Count).ToList();
+
+    var mostPopularBetsHits = Model.Select(g => new
+    {
+        Count =
+        (int)((100*Model.Where(i => i.Result == i.Match.Score.Result && i.HomeScore == i.Match.Score.HomeScore && i.AwayScore == i.Match.Score.AwayScore).Where(i => (i.HomeScore + i.AwayScore == g.AwayScore + g.HomeScore) && (i.HomeScore == g.HomeScore || i.AwayScore == g.HomeScore)).Count())
+        /
+        Model.Where(i => (i.HomeScore + i.AwayScore == g.AwayScore + g.HomeScore) && (i.HomeScore == g.HomeScore || i.AwayScore == g.HomeScore)).Count()),
+        String = g.AwayScore == g.HomeScore ? g.HomeScore.ToString() + " - " + g.AwayScore.ToString() : g.HomeScore > g.AwayScore ? g.HomeScore.ToString() + " - " + g.AwayScore.ToString() : g.AwayScore.ToString() + " - " + g.HomeScore.ToString()
+    }
+                                ).Distinct().OrderByDescending(c => c.Count).ToList();
+
+    var mostPopularBetsResults = Model.Select(g => new
+
+    {
+        Count = (int)((100 * Model.Where(i => i.Result == i.Match.Score.Result && (i.HomeScore != i.Match.Score.HomeScore || i.AwayScore != i.Match.Score.AwayScore)).Where(i => (i.HomeScore + i.AwayScore == g.AwayScore + g.HomeScore) && (i.HomeScore == g.HomeScore || i.AwayScore == g.HomeScore)).Count())
+        /
+        Model.Where(i => (i.HomeScore + i.AwayScore == g.AwayScore + g.HomeScore) && (i.HomeScore == g.HomeScore || i.AwayScore == g.HomeScore)).Count())
+        ,
+        String = g.AwayScore == g.HomeScore ? g.HomeScore.ToString() + " - " + g.AwayScore.ToString() : g.HomeScore > g.AwayScore ? g.HomeScore.ToString() + " - " + g.AwayScore.ToString() : g.AwayScore.ToString() + " - " + g.HomeScore.ToString()
+    }).Distinct().OrderByDescending(c => c.Count).ToList();
+
+    var mostPopularBetsMisses = Model.Select(g => new
+    {
+        Count = (int)((100 * Model.Where(i => i.Result != i.Match.Score.Result).Where(i => (i.HomeScore + i.AwayScore == g.AwayScore + g.HomeScore) && (i.HomeScore == g.HomeScore || i.AwayScore == g.HomeScore)).Count())
+        /
+        Model.Where(i => (i.HomeScore + i.AwayScore == g.AwayScore + g.HomeScore) && (i.HomeScore == g.HomeScore || i.AwayScore == g.HomeScore)).Count()),
+        String = g.AwayScore == g.HomeScore ? g.HomeScore.ToString() + " - " + g.AwayScore.ToString() : g.HomeScore > g.AwayScore ? g.HomeScore.ToString() + " - " + g.AwayScore.ToString() : g.AwayScore.ToString() + " - " + g.HomeScore.ToString()
+    }).Distinct().OrderBy(c => c.Count).ToList();
+
+
+    #endregion
 }
 
 <div class="col-md-4">
@@ -83,12 +139,20 @@
             <td>@orderedByPercentHit[2].Percent %</td>
         </tr>
         <tr style="text-align:center">
-            <td style="text-align:left">@Html.ActionLink(@orderedByPercentHit[3].Name, "UserBets", "Home", new { userName = @orderedByPercentHit[3].Name }, null)</td>
-            <td>@orderedByPercentHit[3].Percent %</td>
+            <td style="text-align:left">...</td>
+            <td>...</td>
         </tr>
         <tr style="text-align:center">
-            <td style="text-align:left">@Html.ActionLink(@orderedByPercentHit[4].Name, "UserBets", "Home", new { userName = @orderedByPercentHit[4].Name }, null)</td>
-            <td>@orderedByPercentHit[4].Percent %</td>
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentHit[orderedByPercentHit.Count - 3].Name, "UserBets", "Home", new { userName = @orderedByPercentHit[orderedByPercentHit.Count - 3].Name }, null)</td>
+            <td>@orderedByPercentHit[orderedByPercentHit.Count - 3].Percent %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentHit[orderedByPercentHit.Count - 2].Name, "UserBets", "Home", new { userName = @orderedByPercentHit[orderedByPercentHit.Count - 2].Name }, null)</td>
+            <td>@orderedByPercentHit[orderedByPercentHit.Count - 2].Percent %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentHit[orderedByPercentHit.Count - 1].Name, "UserBets", "Home", new { userName = @orderedByPercentHit[orderedByPercentHit.Count - 1].Name }, null)</td>
+            <td>@orderedByPercentHit[orderedByPercentHit.Count - 1].Percent %</td>
         </tr>
         <tr class="success" style="text-align:center">
             <td colspan="2">Procent trafień rezultatów</td>
@@ -106,35 +170,51 @@
             <td>@orderedByPercentResult[2].Percent %</td>
         </tr>
         <tr style="text-align:center">
-            <td style="text-align:left">@Html.ActionLink(@orderedByPercentResult[3].Name, "UserBets", "Home", new { userName = @orderedByPercentResult[3].Name }, null)</td>
-            <td>@orderedByPercentResult[3].Percent %</td>
+            <td style="text-align:left">...</td>
+            <td>...</td>
         </tr>
         <tr style="text-align:center">
-            <td style="text-align:left">@Html.ActionLink(@orderedByPercentResult[4].Name, "UserBets", "Home", new { userName = @orderedByPercentResult[4].Name }, null)</td>
-            <td>@orderedByPercentResult[4].Percent %</td>
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentResult[orderedByPercentResult.Count() - 3].Name, "UserBets", "Home", new { userName = @orderedByPercentResult[orderedByPercentResult.Count() - 3].Name }, null)</td>
+            <td>@orderedByPercentResult[orderedByPercentResult.Count() - 3].Percent %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentResult[orderedByPercentResult.Count() - 2].Name, "UserBets", "Home", new { userName = @orderedByPercentResult[orderedByPercentResult.Count() - 2].Name }, null)</td>
+            <td>@orderedByPercentResult[orderedByPercentResult.Count() - 2].Percent %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentResult[orderedByPercentResult.Count() - 1].Name, "UserBets", "Home", new { userName = @orderedByPercentResult[orderedByPercentResult.Count() - 1].Name }, null)</td>
+            <td>@orderedByPercentResult[orderedByPercentResult.Count() - 1].Percent %</td>
         </tr>
         <tr class="success" style="text-align:center">
             <td colspan="2">Procent nietrafień</td>
         </tr>
         <tr style="text-align:center">
-            <td style="text-align:left">@Html.ActionLink(@orderedByPercentMiss[0].Name, "UserBets", "Home", new { userName = @orderedByPercentMiss[0].Name }, null)</td>
-            <td>@orderedByPercentMiss[0].Percent %</td>
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentMiss[orderedByPercentMiss.Count() - 1].Name, "UserBets", "Home", new { userName = @orderedByPercentMiss[orderedByPercentMiss.Count() - 1].Name }, null)</td>
+            <td>@orderedByPercentMiss[orderedByPercentMiss.Count() - 1].Percent %</td>
         </tr>
         <tr style="text-align:center">
-            <td style="text-align:left">@Html.ActionLink(@orderedByPercentMiss[1].Name, "UserBets", "Home", new { userName = @orderedByPercentMiss[1].Name }, null)</td>
-            <td>@orderedByPercentMiss[1].Percent %</td>
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentMiss[orderedByPercentMiss.Count() - 2].Name, "UserBets", "Home", new { userName = @orderedByPercentMiss[orderedByPercentMiss.Count() - 2].Name }, null)</td>
+            <td>@orderedByPercentMiss[orderedByPercentMiss.Count() - 2].Percent %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentMiss[orderedByPercentMiss.Count() - 3].Name, "UserBets", "Home", new { userName = @orderedByPercentMiss[orderedByPercentMiss.Count() - 3].Name }, null)</td>
+            <td>@orderedByPercentMiss[orderedByPercentMiss.Count() - 3].Percent %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">...</td>
+            <td>...</td>
         </tr>
         <tr style="text-align:center">
             <td style="text-align:left">@Html.ActionLink(@orderedByPercentMiss[2].Name, "UserBets", "Home", new { userName = @orderedByPercentMiss[2].Name }, null)</td>
             <td>@orderedByPercentMiss[2].Percent %</td>
         </tr>
         <tr style="text-align:center">
-            <td style="text-align:left">@Html.ActionLink(@orderedByPercentMiss[3].Name, "UserBets", "Home", new { userName = @orderedByPercentMiss[3].Name }, null)</td>
-            <td>@orderedByPercentMiss[3].Percent %</td>
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentMiss[1].Name, "UserBets", "Home", new { userName = @orderedByPercentMiss[1].Name }, null)</td>
+            <td>@orderedByPercentMiss[1].Percent %</td>
         </tr>
         <tr style="text-align:center">
-            <td style="text-align:left">@Html.ActionLink(@orderedByPercentMiss[4].Name, "UserBets", "Home", new { userName = @orderedByPercentMiss[4].Name }, null)</td>
-            <td>@orderedByPercentMiss[4].Percent %</td>
+            <td style="text-align:left">@Html.ActionLink(@orderedByPercentMiss[0].Name, "UserBets", "Home", new { userName = @orderedByPercentMiss[0].Name }, null)</td>
+            <td>@orderedByPercentMiss[0].Percent %</td>
         </tr>
     </table>
 </div>
@@ -145,7 +225,7 @@
             <th colspan="2" style="text-align:center">MECZE - STATYSTYKI</th>
         </tr>
         <tr class="success" style="text-align:center">
-            <td colspan="2">Najwięcej punktów</td>
+            <td colspan="2">Punkty w meczach</td>
         </tr>
         <tr style="text-align:center">
             <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxPoints[0].ID})">@orderedByMaxPoints[0].Name</a></td>
@@ -159,20 +239,21 @@
             <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxPoints[2].ID})">@orderedByMaxPoints[2].Name</a></td>
             <td>@orderedByMaxPoints[2].Points</td>
         </tr>
-        <tr class="success" style="text-align:center">
-            <td colspan="2">Najmniej punktów</td>
+        <tr style="text-align:center">
+            <td style="text-align:left">...</td>
+            <td>...</td>
         </tr>
         <tr style="text-align:center">
-            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxPoints[orderedByMaxPoints.Count - 1].ID})">@orderedByMaxPoints[orderedByMaxPoints.Count - 1].Name</a></td>
-            <td>@orderedByMaxPoints[orderedByMaxPoints.Count - 1].Points</td>
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxPoints[orderedByMaxPoints.Count - 3].ID})">@orderedByMaxPoints[orderedByMaxPoints.Count - 3].Name</a></td>
+            <td>@orderedByMaxPoints[orderedByMaxPoints.Count - 3].Points</td>
         </tr>
         <tr style="text-align:center">
             <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxPoints[orderedByMaxPoints.Count - 2].ID})">@orderedByMaxPoints[orderedByMaxPoints.Count - 2].Name</a></td>
             <td>@orderedByMaxPoints[orderedByMaxPoints.Count - 2].Points</td>
         </tr>
         <tr style="text-align:center">
-            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxPoints[orderedByMaxPoints.Count - 3].ID})">@orderedByMaxPoints[orderedByMaxPoints.Count - 3].Name</a></td>
-            <td>@orderedByMaxPoints[orderedByMaxPoints.Count - 3].Points</td>
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxPoints[orderedByMaxPoints.Count - 1].ID})">@orderedByMaxPoints[orderedByMaxPoints.Count - 1].Name</a></td>
+            <td>@orderedByMaxPoints[orderedByMaxPoints.Count - 1].Points</td>
         </tr>
         <tr class="success" style="text-align:center">
             <td colspan="2">Trafione wyniki</td>
@@ -189,6 +270,22 @@
             <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxHits[2].ID})">@orderedByMaxHits[2].Name</a></td>
             <td>@orderedByMaxHits[2].Count</td>
         </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">...</td>
+            <td>...</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxHits[orderedByMaxHits.Count - 3].ID})">@orderedByMaxHits[orderedByMaxHits.Count - 3].Name</a></td>
+            <td>@orderedByMaxHits[orderedByMaxHits.Count - 3].Count</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxHits[orderedByMaxHits.Count - 2].ID})">@orderedByMaxHits[orderedByMaxHits.Count - 2].Name</a></td>
+            <td>@orderedByMaxHits[orderedByMaxHits.Count - 2].Count</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxHits[orderedByMaxHits.Count - 1].ID})">@orderedByMaxHits[orderedByMaxHits.Count - 1].Name</a></td>
+            <td>@orderedByMaxHits[orderedByMaxHits.Count - 1].Count</td>
+        </tr>
         <tr class="success" style="text-align:center">
             <td colspan="2">Trafione rezultaty</td>
         </tr>
@@ -203,6 +300,22 @@
         <tr style="text-align:center">
             <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxResults[2].ID})">@orderedByMaxResults[2].Name</a></td>
             <td>@orderedByMaxResults[2].Count</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">...</td>
+            <td>...</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxResults[orderedByMaxResults.Count - 3].ID})">@orderedByMaxResults[orderedByMaxResults.Count - 3].Name</a></td>
+            <td>@orderedByMaxResults[orderedByMaxResults.Count - 3].Count</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxResults[orderedByMaxResults.Count - 2].ID})">@orderedByMaxResults[orderedByMaxResults.Count - 2].Name</a></td>
+            <td>@orderedByMaxResults[orderedByMaxResults.Count - 2].Count</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxResults[orderedByMaxResults.Count - 1].ID})">@orderedByMaxResults[orderedByMaxResults.Count - 1].Name</a></td>
+            <td>@orderedByMaxResults[orderedByMaxResults.Count - 1].Count</td>
         </tr>
         <tr class="success" style="text-align:center">
             <td colspan="2">Nietrafione</td>
@@ -219,6 +332,22 @@
             <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxMisses[2].ID})">@orderedByMaxMisses[2].Name</a></td>
             <td>@orderedByMaxMisses[2].Count</td>
         </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">...</td>
+            <td>...</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxMisses[orderedByMaxMisses.Count - 3].ID})">@orderedByMaxMisses[orderedByMaxMisses.Count - 3].Name</a></td>
+            <td>@orderedByMaxMisses[orderedByMaxMisses.Count - 3].Count</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxMisses[orderedByMaxMisses.Count - 2].ID})">@orderedByMaxMisses[orderedByMaxMisses.Count - 2].Name</a></td>
+            <td>@orderedByMaxMisses[orderedByMaxMisses.Count - 2].Count</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxMisses[orderedByMaxMisses.Count - 1].ID})">@orderedByMaxMisses[orderedByMaxMisses.Count - 1].Name</a></td>
+            <td>@orderedByMaxMisses[orderedByMaxMisses.Count - 1].Count</td>
+        </tr>
     </table>
 
 </div>
@@ -226,25 +355,143 @@
 <div class="col-md-4">
     <table class="table table-striped " style="width:300px">
         <tr class="info" style="text-align:center">
-            <th colspan="2" style="text-align:center">MECZE - STATYSTYKI</th>
+            <th colspan="2" style="text-align:center">TYPY - STATYSTYKI</th>
         </tr>
         <tr class="success" style="text-align:center">
-            <td colspan="2">Najwięcej punktów</td>
+            <td colspan="2">Ilość typów</td>
         </tr>
         <tr style="text-align:center">
-            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxPoints[0].ID})">@orderedByMaxPoints[0].Name</a></td>
-            <td>@orderedByMaxPoints[0].Points</td>
+            <td style="text-align:left">Trafione wyniki</td>
+            <td>@countOfHits</td>
         </tr>
         <tr style="text-align:center">
-            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxPoints[1].ID})">@orderedByMaxPoints[1].Name</a></td>
-            <td>@orderedByMaxPoints[1].Points</td>
+            <td style="text-align:left">Trafione rezultaty</td>
+            <td>@countOfResults</td>
         </tr>
         <tr style="text-align:center">
-            <td style="text-align:left"><a href="@Url.Action("SingleMatch", "Home", new { id = @orderedByMaxPoints[2].ID})">@orderedByMaxPoints[2].Name</a></td>
-            <td>@orderedByMaxPoints[2].Points</td>
+            <td style="text-align:left">Nietrafione</td>
+            <td>@countOfMisses</td>
+        </tr>
+        <tr class="success" style="text-align:center">
+            <td colspan="2">Ilość typów over/under 2.5</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">Over</td>
+            <td>@over25</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">Under</td>
+            <td>@under25</td>
+        </tr>
+        <tr class="success" style="text-align:center">
+            <td colspan="2">Popularność wyników</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@mostPopularBets[0].String</td>
+            <td>@mostPopularBets[0].Count</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@mostPopularBets[1].String</td>
+            <td>@mostPopularBets[1].Count</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@mostPopularBets[2].String</td>
+            <td>@mostPopularBets[2].Count</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">...</td>
+            <td>...</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@mostPopularBets[@mostPopularBets.Count() - 3].String</td>
+            <td>@mostPopularBets[@mostPopularBets.Count() - 3].Count</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@mostPopularBets[@mostPopularBets.Count() - 2].String</td>
+            <td>@mostPopularBets[@mostPopularBets.Count() - 2].Count</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@mostPopularBets[@mostPopularBets.Count() - 1].String</td>
+            <td>@mostPopularBets[@mostPopularBets.Count() - 1].Count</td>
+        </tr>
+        <tr class="success" style="text-align:center">
+            <td colspan="2">Trafione wyniki/Wyniki</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@mostPopularBetsHits[0].String</td>
+            <td>@mostPopularBetsHits[0].Count %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@mostPopularBetsHits[1].String</td>
+            <td>@mostPopularBetsHits[1].Count %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@mostPopularBetsHits[2].String</td>
+            <td>@mostPopularBetsHits[2].Count %</td>
+        </tr>
+        <tr class="success" style="text-align:center">
+            <td colspan="2">Trafione rezultaty/Wyniki</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@mostPopularBetsResults[0].String</td>
+            <td>@mostPopularBetsResults[0].Count %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@mostPopularBetsResults[1].String</td>
+            <td>@mostPopularBetsResults[1].Count %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@mostPopularBetsResults[2].String</td>
+            <td>@mostPopularBetsResults[2].Count %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">...</td>
+            <td>...</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@mostPopularBetsResults[@mostPopularBetsResults.Count() - 3].String</td>
+            <td>@mostPopularBetsResults[@mostPopularBetsResults.Count() - 3].Count %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@mostPopularBetsResults[@mostPopularBetsResults.Count() - 2].String</td>
+            <td>@mostPopularBetsResults[@mostPopularBetsResults.Count() - 2].Count %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@mostPopularBetsResults[@mostPopularBetsResults.Count() - 1].String</td>
+            <td>@mostPopularBetsResults[@mostPopularBetsResults.Count() - 1].Count %</td>
+        </tr>
+        <tr class="success" style="text-align:center">
+            <td colspan="2">Nietrafione/Wyniki</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@mostPopularBetsMisses[0].String</td>
+            <td>@mostPopularBetsMisses[0].Count %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@mostPopularBetsMisses[1].String</td>
+            <td>@mostPopularBetsMisses[1].Count %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@mostPopularBetsMisses[2].String</td>
+            <td>@mostPopularBetsMisses[2].Count %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">...</td>
+            <td>...</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@mostPopularBetsMisses[@mostPopularBetsMisses.Count() - 3].String</td>
+            <td>@mostPopularBetsMisses[@mostPopularBetsMisses.Count() - 3].Count %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@mostPopularBetsMisses[@mostPopularBetsMisses.Count() - 2].String</td>
+            <td>@mostPopularBetsMisses[@mostPopularBetsMisses.Count() - 2].Count %</td>
+        </tr>
+        <tr style="text-align:center">
+            <td style="text-align:left">@mostPopularBetsMisses[@mostPopularBetsMisses.Count() - 1].String</td>
+            <td>@mostPopularBetsMisses[@mostPopularBetsMisses.Count() - 1].Count %</td>
         </tr>
     </table>
-
 </div>
 
 
