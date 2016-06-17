@@ -34,6 +34,13 @@ namespace BetEuro
                         validateInterval: TimeSpan.FromMinutes(30),
                         regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
                 }
+                //,
+                //CookieName = "MyCookie",
+                //CookieDomain = ".beteuro.com.pl",
+                //CookieHttpOnly = true,
+                //CookieSecure = CookieSecureOption.Always,
+                //ExpireTimeSpan = TimeSpan.FromDays(30),
+                //SlidingExpiration = true
             });            
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
